@@ -10,6 +10,7 @@ import {
   BarElement 
 } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
+import { useTheme } from '../../context/ThemeContext'; // Assuming you have a ThemeContext
 
 ChartJS.register(
   ArcElement, 
@@ -22,6 +23,7 @@ ChartJS.register(
 
 const BudgetSummary: React.FC = () => {
   const { getIncome, getExpenses, getBalance, transactions } = useStoreContext();
+  const { theme } = useTheme(); // Get the current theme
   
   const income = getIncome();
   const expenses = getExpenses();
@@ -50,7 +52,7 @@ const BudgetSummary: React.FC = () => {
       {
         data: categoryValues,
         backgroundColor: categoryColors.slice(0, categories.length),
-        borderColor: Array(categories.length).fill('#000'),
+        borderColor: theme === 'dark' ? '#374151' : '#000',
         borderWidth: 2,
       },
     ],
@@ -64,7 +66,7 @@ const BudgetSummary: React.FC = () => {
         label: 'Amount',
         data: [income, expenses],
         backgroundColor: ['#4ade80', '#f87171'],
-        borderColor: ['#000', '#000'],
+        borderColor: theme === 'dark' ? '#374151' : '#000',
         borderWidth: 2,
       },
     ],
@@ -80,7 +82,49 @@ const BudgetSummary: React.FC = () => {
             family: 'Inter',
             size: 12,
           },
-          color: '#000',
+          color: theme === 'dark' ? '#fff' : '#000',
+        },
+      },
+    },
+  };
+
+  const barChartOptions = {
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        border: {
+          color: theme === 'dark' ? '#374151' : '#000',
+          width: 2,
+        },
+        ticks: {
+          color: theme === 'dark' ? '#fff' : '#000',
+          font: {
+            family: 'Inter',
+          },
+        },
+        grid: {
+          color: theme === 'dark' ? '#374151' : 'rgba(0, 0, 0, 0.1)',
+        },
+      },
+      x: {
+        border: {
+          color: theme === 'dark' ? '#374151' : '#000',
+          width: 2,
+        },
+        ticks: {
+          color: theme === 'dark' ? '#fff' : '#000',
+          font: {
+            family: 'Inter',
+            weight: 'bold',
+          },
+        },
+        grid: {
+          display: false,
         },
       },
     },
@@ -89,19 +133,19 @@ const BudgetSummary: React.FC = () => {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-3 gap-4">
-        <div className="p-4 border-4 border-black bg-green-100">
-          <p className="text-sm font-bold mb-1">Income</p>
-          <p className="text-xl font-bold text-green-600">${income.toFixed(2)}</p>
+        <div className="p-4 border-4 border-black dark:border-gray-700 bg-green-100 dark:bg-green-900/50">
+          <p className="text-sm font-bold mb-1 text-black dark:text-white">Income</p>
+          <p className="text-xl font-bold text-green-600 dark:text-green-400">${income.toFixed(2)}</p>
         </div>
         
-        <div className="p-4 border-4 border-black bg-red-100">
-          <p className="text-sm font-bold mb-1">Expenses</p>
-          <p className="text-xl font-bold text-red-600">${expenses.toFixed(2)}</p>
+        <div className="p-4 border-4 border-black dark:border-gray-700 bg-red-100 dark:bg-red-900/50">
+          <p className="text-sm font-bold mb-1 text-black dark:text-white">Expenses</p>
+          <p className="text-xl font-bold text-red-600 dark:text-red-400">${expenses.toFixed(2)}</p>
         </div>
         
-        <div className="p-4 border-4 border-black bg-blue-100">
-          <p className="text-sm font-bold mb-1">Balance</p>
-          <p className={`text-xl font-bold ${balance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+        <div className="p-4 border-4 border-black dark:border-gray-700 bg-blue-100 dark:bg-blue-900/50">
+          <p className="text-sm font-bold mb-1 text-black dark:text-white">Balance</p>
+          <p className={`text-xl font-bold ${balance >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
             ${balance.toFixed(2)}
           </p>
         </div>
@@ -109,8 +153,8 @@ const BudgetSummary: React.FC = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {expenses > 0 && (
-          <div className="p-4 border-4 border-black bg-white">
-            <h3 className="text-lg font-bold mb-3">Top Expense Categories</h3>
+          <div className="p-4 border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800">
+            <h3 className="text-lg font-bold mb-3 text-black dark:text-white">Top Expense Categories</h3>
             <div className="h-64">
               <Doughnut data={chartData} options={chartOptions} />
             </div>
@@ -118,39 +162,12 @@ const BudgetSummary: React.FC = () => {
         )}
         
         {(income > 0 || expenses > 0) && (
-          <div className="p-4 border-4 border-black bg-white">
-            <h3 className="text-lg font-bold mb-3">Income vs Expenses</h3>
+          <div className="p-4 border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800">
+            <h3 className="text-lg font-bold mb-3 text-black dark:text-white">Income vs Expenses</h3>
             <div className="h-64">
               <Bar 
                 data={barData} 
-                options={{
-                  scales: {
-                    y: {
-                      beginAtZero: true,
-                      border: {
-                        color: '#000',
-                        width: 2,
-                      },
-                      ticks: {
-                        font: {
-                          family: 'Inter',
-                        },
-                      },
-                    },
-                    x: {
-                      border: {
-                        color: '#000',
-                        width: 2,
-                      },
-                      ticks: {
-                        font: {
-                          family: 'Inter',
-                          weight: 'bold',
-                        },
-                      },
-                    },
-                  },
-                }}
+                options={barChartOptions}
               />
             </div>
           </div>

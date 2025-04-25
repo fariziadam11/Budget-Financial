@@ -1,7 +1,8 @@
 import React from 'react';
-import { BellIcon, MenuIcon, LogOutIcon } from 'lucide-react';
+import { BellIcon, MenuIcon, LogOutIcon, SunIcon, MoonIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuthContext } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 
 interface NavbarProps {
   onNotificationClick: () => void;
@@ -15,14 +16,15 @@ const Navbar: React.FC<NavbarProps> = ({
   notificationCount 
 }) => {
   const { user, logout } = useAuthContext();
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <header className="bg-black text-white border-b-4 border-yellow-400">
+    <header className="bg-white dark:bg-gray-900 text-black dark:text-white border-b-4 border-yellow-400">
       <div className="flex justify-between items-center px-4 py-3">
         <div className="flex items-center space-x-3">
           <button 
             onClick={onMenuClick}
-            className="md:hidden p-1 rounded-none border-2 border-white hover:bg-white hover:text-black transition-colors duration-200"
+            className="md:hidden p-1 rounded-none border-2 border-black dark:border-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors duration-200"
           >
             <MenuIcon size={24} />
           </button>
@@ -39,7 +41,15 @@ const Navbar: React.FC<NavbarProps> = ({
           </span>
           
           <motion.button 
-            className="relative p-2 border-2 border-white rounded-none hover:bg-white hover:text-black transition-colors duration-200"
+            onClick={toggleTheme}
+            className="p-2 border-2 border-black dark:border-white rounded-none hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors duration-200"
+            whileTap={{ scale: 0.95 }}
+          >
+            {theme === 'dark' ? <SunIcon size={20} /> : <MoonIcon size={20} />}
+          </motion.button>
+          
+          <motion.button 
+            className="relative p-2 border-2 border-black dark:border-white rounded-none hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors duration-200"
             onClick={onNotificationClick}
             whileTap={{ scale: 0.95 }}
           >
@@ -52,7 +62,7 @@ const Navbar: React.FC<NavbarProps> = ({
           </motion.button>
 
           <motion.button 
-            className="p-2 border-2 border-white rounded-none hover:bg-white hover:text-black transition-colors duration-200"
+            className="p-2 border-2 border-black dark:border-white rounded-none hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors duration-200"
             onClick={logout}
             whileTap={{ scale: 0.95 }}
           >

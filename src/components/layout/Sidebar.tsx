@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { HomeIcon, CheckSquareIcon, DollarSignIcon, PiggyBankIcon, HelpCircleIcon } from 'lucide-react';
+import { HomeIcon, CheckSquareIcon, DollarSignIcon, PiggyBankIcon} from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface SidebarProps {
@@ -16,7 +16,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavItemClick }) => {
   ];
 
   return (
-    <aside className="w-64 h-full bg-black text-white border-r-4 border-yellow-400">
+    <aside className="w-64 h-full bg-white dark:bg-gray-900 text-black dark:text-white border-r-4 border-yellow-400">
       <nav className="py-6">
         <ul className="space-y-2">
           {navItems.map((item) => (
@@ -28,7 +28,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavItemClick }) => {
                   `flex items-center px-6 py-3 text-lg font-medium border-l-4 ${
                     isActive 
                       ? 'border-yellow-400 bg-yellow-400 text-black' 
-                      : 'border-transparent hover:border-white hover:bg-gray-900'
+                      : 'border-transparent hover:border-black dark:hover:border-white hover:bg-gray-100 dark:hover:bg-gray-800'
                   } transition-colors duration-200`
                 }
               >
@@ -39,18 +39,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavItemClick }) => {
           ))}
         </ul>
       </nav>
-      
-      <div className="absolute bottom-0 w-full border-t-2 border-gray-800">
-        <div className="p-4">
-          <a
-            href="#help"
-            className="flex items-center text-gray-400 hover:text-white transition-colors duration-200"
-          >
-            <HelpCircleIcon size={18} className="mr-2" />
-            <span>Help</span>
-          </a>
-        </div>
-      </div>
     </aside>
   );
 };

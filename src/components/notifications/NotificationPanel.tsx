@@ -7,13 +7,13 @@ import { format } from 'date-fns';
 const getNotificationColor = (type: string) => {
   switch (type) {
     case 'success':
-      return 'bg-green-100 border-l-4 border-green-500';
+      return 'bg-green-100 dark:bg-green-900/50 border-l-4 border-green-500';
     case 'warning':
-      return 'bg-yellow-100 border-l-4 border-yellow-500';
+      return 'bg-yellow-100 dark:bg-yellow-900/50 border-l-4 border-yellow-500';
     case 'error':
-      return 'bg-red-100 border-l-4 border-red-500';
+      return 'bg-red-100 dark:bg-red-900/50 border-l-4 border-red-500';
     default:
-      return 'bg-blue-100 border-l-4 border-blue-500';
+      return 'bg-blue-100 dark:bg-blue-900/50 border-l-4 border-blue-500';
   }
 };
 
@@ -31,28 +31,28 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
 
   if (notifications.length === 0) {
     return (
-      <div className="bg-white shadow-lg rounded-none border-4 border-black overflow-hidden">
-        <div className="p-4 border-b-4 border-black flex justify-between items-center">
-          <h2 className="text-xl font-bold">Notifications</h2>
+      <div className="bg-white dark:bg-gray-900 shadow-lg rounded-none border-4 border-black dark:border-gray-700 overflow-hidden">
+        <div className="p-4 border-b-4 border-black dark:border-gray-700 flex justify-between items-center">
+          <h2 className="text-xl font-bold text-black dark:text-white">Notifications</h2>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-gray-200 transition-colors duration-200"
+            className="p-1 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors duration-200"
           >
-            <XIcon size={20} />
+            <XIcon size={20} className="text-black dark:text-white" />
           </button>
         </div>
         <div className="p-8 text-center">
-          <BellIcon size={40} className="mx-auto mb-4 text-gray-400" />
-          <p className="text-gray-500">No notifications yet</p>
+          <BellIcon size={40} className="mx-auto mb-4 text-gray-400 dark:text-gray-600" />
+          <p className="text-gray-500 dark:text-gray-400">No notifications yet</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white shadow-lg rounded-none border-4 border-black overflow-hidden max-h-[80vh] md:max-h-[600px] flex flex-col">
-      <div className="p-4 border-b-4 border-black flex justify-between items-center">
-        <h2 className="text-xl font-bold">Notifications</h2>
+    <div className="bg-white dark:bg-gray-900 shadow-lg rounded-none border-4 border-black dark:border-gray-700 overflow-hidden max-h-[80vh] md:max-h-[600px] flex flex-col">
+      <div className="p-4 border-b-4 border-black dark:border-gray-700 flex justify-between items-center">
+        <h2 className="text-xl font-bold text-black dark:text-white">Notifications</h2>
         <div className="flex space-x-2">
           <button
             onClick={clearAllNotifications}

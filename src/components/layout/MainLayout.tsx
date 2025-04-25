@@ -23,7 +23,7 @@ const MainLayout: React.FC = () => {
   const unreadCount = getUnreadNotificationsCount();
 
   return (
-    <div className="flex flex-col min-h-screen bg-yellow-50">
+    <div className="flex flex-col min-h-screen bg-yellow-50 dark:bg-gray-950">
       <Navbar 
         onNotificationClick={toggleNotifications} 
         onMenuClick={toggleMobileSidebar}

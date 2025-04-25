@@ -49,16 +49,16 @@ const TransactionList: React.FC<TransactionListProps> = ({ showFilters = true })
   }
 
   return (
-    <div className="border-4 border-black bg-white">
+    <div className="border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800">
       {showFilters && (
-        <div className="p-4 border-b-4 border-black bg-gray-100">
+        <div className="p-4 border-b-4 border-black dark:border-gray-700 bg-gray-100 dark:bg-gray-900">
           <div className="flex flex-wrap gap-3">
             <div>
-              <label className="block mb-1 text-sm font-bold">Type</label>
+              <label className="block mb-1 text-sm font-bold text-black dark:text-white">Type</label>
               <select
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
-                className="p-1 border-2 border-black text-sm"
+                className="p-1 border-2 border-black dark:border-gray-700 text-sm bg-white dark:bg-gray-800 text-black dark:text-white"
               >
                 <option value="all">All</option>
                 <option value="income">Income</option>
@@ -71,7 +71,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ showFilters = true })
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="p-1 border-2 border-black text-sm"
+                className="p-1 border-2 border-black dark:border-gray-700 text-sm bg-white dark:bg-gray-800 text-black dark:text-white"
               >
                 <option value="all">All Categories</option>
                 {allCategories.map(category => (
@@ -85,7 +85,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ showFilters = true })
               <select
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value as any)}
-                className="p-1 border-2 border-black text-sm"
+                className="p-1 border-2 border-black dark:border-gray-700 text-sm bg-white dark:bg-gray-800 text-black dark:text-white"
               >
                 <option value="newest">Newest First</option>
                 <option value="oldest">Oldest First</option>
@@ -97,7 +97,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ showFilters = true })
         </div>
       )}
       
-      <div className="divide-y-2 divide-gray-200 max-h-96 overflow-y-auto">
+      <div className="divide-y-2 divide-gray-200 dark:divide-gray-700 max-h-96 overflow-y-auto">
         <AnimatePresence>
           {filteredTransactions.length > 0 ? (
             filteredTransactions.map((transaction) => (
@@ -130,7 +130,7 @@ interface TransactionItemProps {
 const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, onDelete }) => {
   return (
     <motion.div 
-      className="p-4 hover:bg-gray-50 transition-colors duration-200"
+      className={`p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200`}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, height: 0 }}
@@ -139,7 +139,9 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, onDelete
       <div className="flex justify-between items-center">
         <div className="flex items-center">
           <div className={`p-2 mr-3 ${
-            transaction.type === 'income' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
+            transaction.type === 'income' 
+              ? 'bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400' 
+              : 'bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400'
           }`}>
             {transaction.type === 'income' ? (
               <ArrowUpCircle size={20} />
@@ -148,10 +150,10 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, onDelete
             )}
           </div>
           <div>
-            <p className="font-medium">{transaction.description}</p>
-            <div className="flex text-xs text-gray-500 mt-1">
+            <p className="font-medium text-black dark:text-white">{transaction.description}</p>
+            <div className="flex text-xs text-gray-500 dark:text-gray-400 mt-1">
               <span className="mr-2">{format(new Date(transaction.date), 'MMM d, yyyy')}</span>
-              <span className="px-1 bg-gray-200">{transaction.category}</span>
+              <span className="px-1 bg-gray-200 dark:bg-gray-600">{transaction.category}</span>
             </div>
           </div>
         </div>

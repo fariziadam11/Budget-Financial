@@ -32,7 +32,7 @@ const TaskForm: React.FC = () => {
 
   return (
     <motion.div 
-      className="bg-yellow-400 border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mb-6"
+      className="bg-yellow-400 dark:bg-yellow-500 border-4 border-black dark:border-gray-700 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] mb-6 text-black dark:text-white"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
     >
@@ -49,7 +49,7 @@ const TaskForm: React.FC = () => {
                   setIsExpanded(true);
                 }
               }}
-              className="w-full p-3 border-2 border-black focus:outline-none font-medium"
+              className="w-full p-3 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none font-medium"
               onFocus={() => setIsExpanded(true)}
             />
           </div>
@@ -62,11 +62,11 @@ const TaskForm: React.FC = () => {
             >
               <div className="flex flex-col sm:flex-row sm:space-x-3 space-y-3 sm:space-y-0">
                 <div className="flex-1">
-                  <label className="block mb-1 font-bold">Category</label>
+                  <label className="block mb-1 font-bold text-black dark:text-white">Category</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full p-2 border-2 border-black focus:outline-none"
+                    className="w-full p-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
                   >
                     {categories.map((cat) => (
                       <option key={cat} value={cat}>{cat}</option>
@@ -75,12 +75,12 @@ const TaskForm: React.FC = () => {
                 </div>
                 
                 <div className="flex-1">
-                  <label className="block mb-1 font-bold">Due Date</label>
+                  <label className="block mb-1 font-bold text-black dark:text-white">Due Date</label>
                   <input
                     type="date"
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
-                    className="w-full p-2 border-2 border-black focus:outline-none"
+                    className="w-full p-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
                   />
                 </div>
               </div>
@@ -96,14 +96,14 @@ const TaskForm: React.FC = () => {
                       setDueDate('');
                     }
                   }}
-                  className="px-4 py-2 border-2 border-black bg-white hover:bg-gray-100 transition-colors duration-200"
+                  className="px-4 py-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
                 >
                   Cancel
                 </button>
                 
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-black text-white border-2 border-black hover:bg-gray-800 transition-colors duration-200"
+                  className="px-4 py-2 bg-black dark:bg-white text-white dark:text-black border-2 border-black dark:border-gray-700 hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200"
                 >
                   Add Task
                 </button>

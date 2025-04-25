@@ -42,7 +42,7 @@ const SavingGoalForm: React.FC = () => {
         <div className="flex justify-center">
           <motion.button
             onClick={() => setIsFormVisible(true)}
-            className="px-6 py-2 border-4 border-black bg-yellow-400 hover:bg-yellow-500 transition-colors duration-200 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            className="px-6 py-2 border-4 border-black dark:border-gray-700 bg-yellow-400 dark:bg-yellow-500 hover:bg-yellow-500 dark:hover:bg-yellow-600 text-black dark:text-white transition-colors duration-200 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -51,7 +51,7 @@ const SavingGoalForm: React.FC = () => {
         </div>
       ) : (
         <motion.div 
-          className="border-4 border-black bg-yellow-100 p-5 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          className="border-4 border-black dark:border-gray-700 bg-yellow-100 dark:bg-yellow-900/50 p-5 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -65,7 +65,7 @@ const SavingGoalForm: React.FC = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="E.g., Vacation, New Laptop"
-                className="w-full p-2 border-2 border-black focus:outline-none"
+                className="w-full p-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
                 required
               />
             </div>
@@ -80,7 +80,7 @@ const SavingGoalForm: React.FC = () => {
                   placeholder="0.00"
                   min="0.01"
                   step="0.01"
-                  className="w-full p-2 border-2 border-black focus:outline-none"
+                  className="w-full p-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
                   required
                 />
               </div>
@@ -94,7 +94,7 @@ const SavingGoalForm: React.FC = () => {
                   placeholder="0.00"
                   min="0"
                   step="0.01"
-                  className="w-full p-2 border-2 border-black focus:outline-none"
+                  className="w-full p-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
                 />
               </div>
             </div>
@@ -105,7 +105,7 @@ const SavingGoalForm: React.FC = () => {
                 type="date"
                 value={deadline}
                 onChange={(e) => setDeadline(e.target.value)}
-                className="w-full p-2 border-2 border-black focus:outline-none"
+                className="w-full p-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
                 required
               />
             </div>
@@ -114,14 +114,14 @@ const SavingGoalForm: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsFormVisible(false)}
-                className="px-4 py-2 border-2 border-black bg-white hover:bg-gray-100 transition-colors duration-200"
+                className="px-4 py-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
               >
                 Cancel
               </button>
               
               <button
                 type="submit"
-                className="px-4 py-2 bg-black text-white border-2 border-black hover:bg-gray-800 transition-colors duration-200"
+                className="px-4 py-2 bg-black dark:bg-white text-white dark:text-black border-2 border-black dark:border-gray-700 hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200"
               >
                 Create Goal
               </button>

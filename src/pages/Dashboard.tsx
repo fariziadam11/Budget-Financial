@@ -30,8 +30,8 @@ const Dashboard: React.FC = () => {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-4xl font-black tracking-tight">DASHBOARD</h1>
-        <p className="text-gray-600 mt-1">Your daily financial and task overview</p>
+        <h1 className="text-4xl font-black tracking-tight text-black dark:text-white">DASHBOARD</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-1">Your daily financial and task overview</p>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

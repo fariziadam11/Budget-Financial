@@ -50,7 +50,7 @@ const Tasks: React.FC = () => {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-4xl font-black tracking-tight flex items-center">
+        <h1 className="text-4xl font-black tracking-tight flex items-center dark:text-white">
           <CheckSquareIcon size={36} className="mr-3" />
           TASKS
         </h1>

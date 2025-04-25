@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import { StoreProvider } from './context/StoreContext';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import RequireAuth from './components/auth/RequireAuth';
 import MainLayout from './components/layout/MainLayout';
 import Dashboard from './pages/Dashboard';
@@ -43,10 +44,12 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthProvider>
-      <StoreProvider>
-        <RouterProvider router={router} />
-      </StoreProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <StoreProvider>
+          <RouterProvider router={router} />
+        </StoreProvider>
+      </AuthProvider>
+    </ThemeProvider>
   </StrictMode>
 );

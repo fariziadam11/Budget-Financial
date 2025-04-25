@@ -55,7 +55,7 @@ const TransactionForm: React.FC = () => {
               setType('income');
               setCategory(allIncomeCategories[0]);
             }}
-            className="px-4 py-2 border-4 border-black bg-green-400 hover:bg-green-500 transition-colors duration-200 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            className="px-4 py-2 border-4 border-black dark:border-gray-700 bg-green-400 dark:bg-green-600 hover:bg-green-500 dark:hover:bg-green-700 transition-colors duration-200 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -68,7 +68,7 @@ const TransactionForm: React.FC = () => {
               setType('expense');
               setCategory(allExpenseCategories[0]);
             }}
-            className="px-4 py-2 border-4 border-black bg-red-400 hover:bg-red-500 transition-colors duration-200 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            className="px-4 py-2 border-4 border-black dark:border-gray-700 bg-red-400 dark:bg-red-600 hover:bg-red-500 dark:hover:bg-red-700 transition-colors duration-200 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -77,32 +77,32 @@ const TransactionForm: React.FC = () => {
         </div>
       ) : (
         <motion.div 
-          className={`border-4 border-black ${
-            type === 'income' ? 'bg-green-100' : 'bg-red-100'
-          } p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]`}
+          className={`border-4 border-black dark:border-gray-700 ${
+            type === 'income' ? 'bg-green-100 dark:bg-green-800' : 'bg-red-100 dark:bg-red-800'
+          } p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]`}
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <h3 className="text-xl font-bold mb-4">
+          <h3 className="text-xl font-bold mb-4 dark:text-white">
             Add {type === 'income' ? 'Income' : 'Expense'}
           </h3>
           
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block mb-1 font-bold">Description</label>
+                <label className="block mb-1 font-bold dark:text-white">Description</label>
                 <input
                   type="text"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder={type === 'income' ? 'E.g., Salary' : 'E.g., Groceries'}
-                  className="w-full p-2 border-2 border-black focus:outline-none"
+                  className="w-full p-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
                   required
                 />
               </div>
               
               <div>
-                <label className="block mb-1 font-bold">Amount</label>
+                <label className="block mb-1 font-bold dark:text-white">Amount</label>
                 <input
                   type="number"
                   value={amount}
@@ -110,17 +110,17 @@ const TransactionForm: React.FC = () => {
                   placeholder="0.00"
                   min="0.01"
                   step="0.01"
-                  className="w-full p-2 border-2 border-black focus:outline-none"
+                  className="w-full p-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
                   required
                 />
               </div>
               
               <div>
-                <label className="block mb-1 font-bold">Category</label>
+                <label className="block mb-1 font-bold dark:text-white">Category</label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full p-2 border-2 border-black focus:outline-none"
+                  className="w-full p-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
                   required
                 >
                   <option value="" disabled>Select a category</option>
@@ -131,12 +131,12 @@ const TransactionForm: React.FC = () => {
               </div>
               
               <div>
-                <label className="block mb-1 font-bold">Date</label>
+                <label className="block mb-1 font-bold dark:text-white">Date</label>
                 <input
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full p-2 border-2 border-black focus:outline-none"
+                  className="w-full p-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
                   required
                 />
               </div>
@@ -146,17 +146,17 @@ const TransactionForm: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsFormVisible(false)}
-                className="px-4 py-2 border-2 border-black bg-white hover:bg-gray-100 transition-colors duration-200"
+                className="px-4 py-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
               >
                 Cancel
               </button>
               
               <button
                 type="submit"
-                className={`px-4 py-2 text-white border-2 border-black ${
+                className={`px-4 py-2 text-black dark:text-white border-2 border-black dark:border-gray-700 ${
                   type === 'income' 
-                    ? 'bg-green-500 hover:bg-green-600' 
-                    : 'bg-red-500 hover:bg-red-600'
+                    ? 'bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700' 
+                    : 'bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700'
                 } transition-colors duration-200`}
               >
                 Add {type === 'income' ? 'Income' : 'Expense'}

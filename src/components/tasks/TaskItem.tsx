@@ -115,7 +115,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
 
   return (
     <motion.div 
-      className={`border-4 border-black ${task.completed ? 'bg-gray-100' : 'bg-white'} p-4 mb-3 ${isOverdue() ? 'border-l-red-500 border-l-8' : ''}`}
+      className={`border-4 border-black dark:border-gray-700 ${task.completed ? 'bg-gray-100 dark:bg-gray-800/50' : 'bg-white dark:bg-gray-800'} p-4 mb-3 ${isOverdue() ? 'border-l-red-500 border-l-8' : ''}`}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, height: 0, marginBottom: 0 }}
@@ -126,14 +126,14 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
         <div className="flex items-start flex-1">
           <button
             onClick={() => onToggle(task.id)}
-            className={`flex-shrink-0 mt-1 w-6 h-6 border-2 border-black mr-3 ${
-              task.completed ? 'bg-green-500' : 'bg-white'
+            className={`flex-shrink-0 mt-1 w-6 h-6 border-2 border-black dark:border-white mr-3 ${
+              task.completed ? 'bg-green-500' : 'bg-white dark:bg-gray-800'
             } hover:border-green-500 transition-colors duration-200`}
           >
             {task.completed && <Check size={20} className="text-white" />}
           </button>
           <div className="flex-1">
-            <p className={`font-medium ${task.completed ? 'line-through text-gray-500' : ''}`}>
+            <p className={`font-medium text-black dark:text-white ${task.completed ? 'line-through text-gray-500 dark:text-gray-400' : ''}`}>
               {task.title}
             </p>
             <div className="flex flex-wrap items-center mt-2 text-sm">
@@ -141,13 +141,13 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
                 {task.category}
               </span>
               {task.dueDate && (
-                <span className="flex items-center text-xs text-gray-500">
+                <span className="flex items-center text-xs text-gray-500 dark:text-gray-400">
                   <Calendar size={12} className="mr-1" />
                   {dueDateFormatted}
                 </span>
               )}
               {isOverdue() && (
-                <span className="flex items-center text-xs text-red-500 ml-2">
+                <span className="flex items-center text-xs text-red-500 dark:text-red-400 ml-2">
                   <AlertCircle size={12} className="mr-1" />
                   Overdue
                 </span>
@@ -159,13 +159,13 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
         <div className="flex space-x-2 ml-2">
           <button
             onClick={handleEdit}
-            className="text-blue-500 hover:text-blue-700 transition-colors duration-200"
+            className="text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-200"
           >
             <Edit size={18} />
           </button>
           <button
             onClick={() => onDelete(task.id)}
-            className="text-red-500 hover:text-red-700 transition-colors duration-200"
+            className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors duration-200"
           >
             <Trash size={18} />
           </button>

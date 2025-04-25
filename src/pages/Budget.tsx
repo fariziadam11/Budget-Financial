@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStoreContext } from '../context/StoreContext';
+// import { useStoreContext } from '../context/StoreContext';
 import TransactionForm from '../components/budget/TransactionForm';
 import TransactionList from '../components/budget/TransactionList';
 import BudgetSummary from '../components/dashboard/BudgetSummary';
@@ -10,7 +10,7 @@ const Budget: React.FC = () => {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-4xl font-black tracking-tight flex items-center">
+        <h1 className="text-4xl font-black tracking-tight flex items-center dark:text-white">
           <DollarSignIcon size={36} className="mr-3" />
           BUDGET
         </h1>
@@ -23,7 +23,7 @@ const Budget: React.FC = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-2xl font-bold mb-4">Summary</h2>
+          <h2 className="text-2xl font-bold mb-4 dark:text-white">Summary</h2>
           <div className="p-6 border-4 border-black bg-white">
             <BudgetSummary />
           </div>
@@ -34,7 +34,7 @@ const Budget: React.FC = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <h2 className="text-2xl font-bold mb-4">Add Transaction</h2>
+          <h2 className="text-2xl font-bold mb-4 dark:text-white">Add Transaction</h2>
           <TransactionForm />
         </motion.div>
       </div>
@@ -44,7 +44,7 @@ const Budget: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
       >
-        <h2 className="text-2xl font-bold mb-4">Transactions</h2>
+        <h2 className="text-2xl font-bold mb-4 dark:text-white">Transactions</h2>
         <TransactionList />
       </motion.div>
     </div>
