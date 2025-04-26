@@ -66,7 +66,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
           {notifications.length > 0 && (
             <button
               onClick={clearAllNotifications}
-              className="p-2 border-2 border-red-500 dark:border-red-400 hover:bg-red-500 dark:hover:bg-red-400 hover:text-white transition-colors duration-200"
+              className="p-2 border-2 border-red-500 dark:border-red-400 hover:bg-red-500 dark:hover:bg-red-400 hover:text-white transition-colors duration-200 dark:text-red-500"
               aria-label="Clear all notifications"
             >
               <Trash2 size={16} />
@@ -74,7 +74,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
           )}
           <button
             onClick={onClose}
-            className="p-2 border-2 border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-colors duration-200"
+            className="p-2 border-2 border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-colors duration-200 dark:text-white"
             aria-label="Close notifications"
           >
             <X size={16} />
