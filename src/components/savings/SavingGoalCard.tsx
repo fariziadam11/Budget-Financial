@@ -17,7 +17,6 @@ const SavingGoalCard: React.FC<SavingGoalCardProps> = ({
 }) => {
   const [isContributing, setIsContributing] = useState(false);
   const [contributionAmount, setContributionAmount] = useState('');
-  const [isButtonHovered, setIsButtonHovered] = useState(false);
   
   const progressPercentage = Math.min(
     Math.round((goal.currentAmount / goal.targetAmount) * 100),
@@ -229,8 +228,6 @@ const SavingGoalCard: React.FC<SavingGoalCardProps> = ({
         {!isComplete && !isContributing && (
           <button
             onClick={toggleContribute}
-            onMouseEnter={() => setIsButtonHovered(true)}
-            onMouseLeave={() => setIsButtonHovered(false)}
             className={`w-full py-3 mt-4 flex items-center justify-center font-bold rounded-none transition-all duration-150 ${getButtonStyle(isOverdue)}`}
             aria-label={`Add money to ${goal.name} goal`}
           >
