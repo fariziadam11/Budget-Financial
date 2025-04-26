@@ -109,11 +109,11 @@ const Dashboard: React.FC = () => {
         <DashboardCard 
           title="Saving Goals" 
           icon={<PiggyBankIcon size={24} />}
-          color={{ light: "bg-yellow-100", dark: "bg-yellow-900/50" }}
+          color={{ light: "bg-yellow-100", dark: "bg-yellow-800/50" }} // Less brown, more golden
           delay={2}
         >
           <div className="mt-3">
-            {topSavingGoals.length > 0 ? (
+            {topSavingGoals.length > 0 ? (  
               <div>
                 {topSavingGoals.map(goal => (
                   <SavingGoalCard
@@ -141,7 +141,7 @@ const Dashboard: React.FC = () => {
                 <p className="text-gray-500 dark:text-gray-400 mb-3">No saving goals yet!</p>
                 <Link to="/savings">
                   <motion.button
-                    className="p-2 border-2 border-black dark:border-white bg-yellow-200 hover:bg-yellow-300 dark:bg-yellow-800 dark:hover:bg-yellow-700 transition-colors duration-200 dark:text-white"
+                    className="p-2 border-2 border-black dark:border-white bg-yellow-200 hover:bg-yellow-300 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors duration-200 dark:text-white"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >

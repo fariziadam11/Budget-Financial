@@ -24,7 +24,7 @@ const Budget: React.FC = () => {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-2xl font-bold mb-4 dark:text-white">Summary</h2>
-          <div className="p-6 border-4 border-black bg-white">
+          <div className="p-6 border-4 border-black bg-white dark:bg-gray-900/50 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]">
             <BudgetSummary />
           </div>
         </motion.div>

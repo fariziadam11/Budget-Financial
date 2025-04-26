@@ -39,7 +39,7 @@ const Savings: React.FC = () => {
       {/* Summary Cards */}
       {savingGoals.length > 0 && (
         <motion.div 
-          className="p-6 mb-8 border-4 border-black dark:border-gray-600 bg-blue-100 dark:bg-blue-900/50 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]"
+          className="p-6 mb-8 border-4 border-black dark:border-gray-600 bg-blue-100 dark:bg-gray-900/50 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
@@ -70,7 +70,7 @@ const Savings: React.FC = () => {
               whileHover={{ y: -2 }}
             >
               <div className="flex items-center mb-2">
-                <Target size={20} className="text-blue-500 dark:text-blue-400 mr-2" />
+                <Target size={20} className="text-blue-500 dark:text-gray-400 mr-2" />
                 <p className="text-lg font-bold text-black dark:text-white">Total Goals</p>
               </div>
               <p className="text-2xl font-black text-black dark:text-white">
@@ -105,7 +105,7 @@ const Savings: React.FC = () => {
                 <span className="text-sm font-medium text-black dark:text-white">
                   Overall Progress
                 </span>
-                <span className="text-sm font-medium text-black dark:text-white">
+                <span className="text-sm font-medium text-black dark:text-white border-radius: 50px">
                   {completionPercentage}%
                 </span>
               </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useStoreContext } from '../../context/StoreContext';
 import { motion } from 'framer-motion';
+import { Plus, X } from 'lucide-react';
 
 const SavingGoalForm: React.FC = () => {
   const { addSavingGoal } = useStoreContext();
@@ -42,89 +43,127 @@ const SavingGoalForm: React.FC = () => {
         <div className="flex justify-center">
           <motion.button
             onClick={() => setIsFormVisible(true)}
-            className="px-6 py-2 border-4 border-black dark:border-gray-700 bg-yellow-400 dark:bg-yellow-500 hover:bg-yellow-500 dark:hover:bg-yellow-600 text-black dark:text-white transition-colors duration-200 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
+            className="flex items-center gap-2 px-6 py-3 border-4 border-black dark:border-gray-700 
+                      bg-white dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 
+                      text-black dark:text-white transition-colors duration-200 
+                      shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.05)]
+                      rounded-lg font-medium"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
+            <Plus size={20} />
             Create New Saving Goal
           </motion.button>
         </div>
       ) : (
         <motion.div 
-          className="border-4 border-black dark:border-gray-700 bg-yellow-100 dark:bg-yellow-900/50 p-5 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]"
+          className="border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-900 
+                    p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.05)]
+                    rounded-lg"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <h3 className="text-xl font-bold mb-4">Create New Saving Goal</h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-bold text-black dark:text-white">Create New Saving Goal</h3>
+            <button
+              onClick={() => setIsFormVisible(false)}
+              className="p-1 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition-colors"
+              aria-label="Close form"
+            >
+              <X size={20} className="text-black dark:text-white" />
+            </button>
+          </div>
           
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block mb-1 font-bold">Goal Name</label>
+              <label className="block mb-2 font-medium text-black dark:text-white">Goal Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="E.g., Vacation, New Laptop"
-                className="w-full p-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
+                className="w-full p-3 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 
+                          text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-500
+                          rounded-lg"
                 required
               />
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block mb-1 font-bold">Target Amount</label>
-                <input
-                  type="number"
-                  value={targetAmount}
-                  onChange={(e) => setTargetAmount(e.target.value)}
-                  placeholder="0.00"
-                  min="0.01"
-                  step="0.01"
-                  className="w-full p-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
-                  required
-                />
+                <label className="block mb-2 font-medium text-black dark:text-white">Target Amount</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black dark:text-gray-400">$</span>
+                  <input
+                    type="number"
+                    value={targetAmount}
+                    onChange={(e) => setTargetAmount(e.target.value)}
+                    placeholder="0.00"
+                    min="0.01"
+                    step="0.01"
+                    className="w-full p-3 pl-8 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 
+                              text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-500
+                              rounded-lg"
+                    required
+                  />
+                </div>
               </div>
               
               <div>
-                <label className="block mb-1 font-bold">Current Amount (Optional)</label>
-                <input
-                  type="number"
-                  value={currentAmount}
-                  onChange={(e) => setCurrentAmount(e.target.value)}
-                  placeholder="0.00"
-                  min="0"
-                  step="0.01"
-                  className="w-full p-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
-                />
+                <label className="block mb-2 font-medium text-black dark:text-white">Current Amount (Optional)</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black dark:text-gray-400">$</span>
+                  <input
+                    type="number"
+                    value={currentAmount}
+                    onChange={(e) => setCurrentAmount(e.target.value)}
+                    placeholder="0.00"
+                    min="0"
+                    step="0.01"
+                    className="w-full p-3 pl-8 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 
+                              text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-500
+                              rounded-lg"
+                  />
+                </div>
               </div>
             </div>
             
             <div>
-              <label className="block mb-1 font-bold">Deadline</label>
+              <label className="block mb-2 font-medium text-black dark:text-white">Deadline</label>
               <input
                 type="date"
                 value={deadline}
                 onChange={(e) => setDeadline(e.target.value)}
-                className="w-full p-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
+                className="w-full p-3 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 
+                          text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-500
+                          rounded-lg"
                 required
               />
             </div>
             
-            <div className="flex justify-between pt-2">
-              <button
+            <div className="flex justify-between pt-4 gap-4">
+              <motion.button
                 type="button"
                 onClick={() => setIsFormVisible(false)}
-                className="px-4 py-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                className="flex-1 py-3 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 
+                          text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 
+                          transition-colors duration-200 rounded-lg font-medium"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 Cancel
-              </button>
+              </motion.button>
               
-              <button
+              <motion.button
                 type="submit"
-                className="px-4 py-2 bg-black dark:bg-white text-white dark:text-black border-2 border-black dark:border-gray-700 hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200"
+                className="flex-1 py-3 bg-black dark:bg-white text-white dark:text-black 
+                          border-2 border-black dark:border-gray-700 hover:bg-gray-800 dark:hover:bg-gray-200 
+                          transition-colors duration-200 rounded-lg font-medium"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 Create Goal
-              </button>
+              </motion.button>
             </div>
           </form>
         </motion.div>

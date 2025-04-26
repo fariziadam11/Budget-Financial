@@ -67,7 +67,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ showFilters = true })
             </div>
             
             <div>
-              <label className="block mb-1 text-sm font-bold">Category</label>
+              <label className="block mb-1 text-sm font-bold dark:text-white">Category</label>
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
@@ -81,7 +81,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ showFilters = true })
             </div>
             
             <div>
-              <label className="block mb-1 text-sm font-bold">Sort By</label>
+              <label className="block mb-1 text-sm font-bold dark:text-white">Sort By</label>
               <select
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value as any)}

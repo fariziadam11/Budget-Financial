@@ -19,7 +19,6 @@ const getCategoryColor = (category: string) => {
     'Health': { light: 'bg-red-500', dark: 'bg-red-600' },
     'Shopping': { light: 'bg-yellow-500', dark: 'bg-yellow-600' },
   };
-  
   const defaultColor = { light: 'bg-gray-500', dark: 'bg-gray-600' };
   return colors[category] || defaultColor;
 };
@@ -28,26 +27,20 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(task.title);
   const [editedCategory, setEditedCategory] = useState(task.category);
-  const [editedDueDate, setEditedDueDate] = useState(
-    task.dueDate ? task.dueDate.split('T')[0] : ''
-  );
+  const [editedDueDate, setEditedDueDate] = useState(task.dueDate ? task.dueDate.split('T')[0] : '');
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
-
+  const handleEdit = () => setIsEditing(true);
   const handleCancel = () => {
     setIsEditing(false);
     setEditedTitle(task.title);
     setEditedCategory(task.category);
     setEditedDueDate(task.dueDate ? task.dueDate.split('T')[0] : '');
   };
-
   const handleSave = () => {
     onEdit(task.id, { 
       title: editedTitle,
       category: editedCategory,
-      dueDate: editedDueDate ? new Date(editedDueDate).toISOString() : null
+      dueDate: editedDueDate ? new Date(editedDueDate).toISOString() : null,
     });
     setIsEditing(false);
   };
@@ -62,7 +55,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
 
   if (isEditing) {
     return (
-      <motion.div 
+      <motion.div
         className="border-4 border-black dark:border-yellow-400 bg-white dark:bg-gray-900 p-4 mb-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
         initial={{ scale: 0.95 }}
         animate={{ scale: 1 }}
@@ -75,7 +68,6 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
             onChange={(e) => setEditedTitle(e.target.value)}
             className="w-full p-2 border-2 border-black dark:border-yellow-400 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 dark:focus:ring-yellow-400"
           />
-          
           <div className="flex flex-col sm:flex-row sm:space-x-3 space-y-3 sm:space-y-0">
             <select
               value={editedCategory}
@@ -88,7 +80,6 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
               <option value="Health">Health</option>
               <option value="Shopping">Shopping</option>
             </select>
-            
             <input
               type="date"
               value={editedDueDate}
@@ -96,7 +87,6 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
               className="p-2 border-2 border-black dark:border-yellow-400 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 dark:focus:ring-yellow-400"
             />
           </div>
-          
           <div className="flex justify-end space-x-2">
             <button
               onClick={handleCancel}
@@ -117,10 +107,10 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
   }
 
   return (
-    <motion.div 
+    <motion.div
       className={`border-4 border-black dark:border-gray-600 ${
-        task.completed 
-          ? 'bg-gray-100 dark:bg-gray-800/50' 
+        task.completed
+          ? 'bg-gray-100 dark:bg-gray-800/50'
           : 'bg-white dark:bg-gray-900'
       } p-4 mb-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] ${
         isOverdue() ? 'border-l-8 border-l-red-500 dark:border-l-red-600' : ''
@@ -136,8 +126,8 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
           <button
             onClick={() => onToggle(task.id)}
             className={`flex-shrink-0 mt-1 w-6 h-6 border-2 border-black dark:border-gray-300 mr-3 ${
-              task.completed 
-                ? 'bg-green-500 dark:bg-green-600 border-green-500 dark:border-green-600' 
+              task.completed
+                ? 'bg-green-500 dark:bg-green-600 border-green-500 dark:border-green-600'
                 : 'bg-white dark:bg-gray-800'
             } hover:border-green-500 dark:hover:border-green-500 transition-colors duration-200 flex items-center justify-center`}
             aria-label={task.completed ? 'Mark task incomplete' : 'Mark task complete'}
@@ -145,8 +135,8 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
             {task.completed && <Check size={16} className="text-white" />}
           </button>
           <div className="flex-1">
-            <p className={`font-medium text-black dark:text-gray-100 ${
-              task.completed ? 'line-through text-gray-500 dark:text-gray-400' : ''
+            <p className={`font-medium text-black dark:text-white ${
+              task.completed ? 'line-through text-gray-400 dark:text-gray-500' : ''
             }`}>
               {task.title}
             </p>
@@ -155,7 +145,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
                 {task.category}
               </span>
               {task.dueDate && (
-                <span className="flex items-center text-xs text-gray-600 dark:text-gray-300">
+                <span className="flex items-center text-xs text-gray-600 dark:text-gray-400">
                   <Calendar size={12} className="mr-1" />
                   {dueDateFormatted}
                 </span>
@@ -169,7 +159,6 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
             </div>
           </div>
         </div>
-        
         <div className="flex space-x-2 ml-2">
           <button
             onClick={handleEdit}
