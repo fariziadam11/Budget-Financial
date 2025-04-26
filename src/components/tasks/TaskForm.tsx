@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useStoreContext } from '../../context/StoreContext';
 import { motion } from 'framer-motion';
+import { Plus, X } from 'lucide-react';
 
 const TaskForm: React.FC = () => {
   const { addTask, getTaskCategories } = useStoreContext();
@@ -32,13 +33,13 @@ const TaskForm: React.FC = () => {
 
   return (
     <motion.div 
-      className="bg-yellow-400 dark:bg-yellow-500 border-4 border-black dark:border-gray-700 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] mb-6 text-black dark:text-white"
+      className="bg-yellow-400 dark:bg-yellow-600/80 border-4 border-black dark:border-yellow-400 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] mb-6 text-black dark:text-yellow-50"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
     >
       <form onSubmit={handleSubmit} className="p-4">
         <div className="flex flex-col space-y-4">
-          <div>
+          <div className="relative">
             <input
               type="text"
               placeholder="Add a new task..."
@@ -49,24 +50,29 @@ const TaskForm: React.FC = () => {
                   setIsExpanded(true);
                 }
               }}
-              className="w-full p-3 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none font-medium"
+              className="w-full p-3 pr-10 border-2 border-black dark:border-yellow-300 bg-white dark:bg-gray-900 text-black dark:text-yellow-50 focus:outline-none font-medium placeholder-gray-700 dark:placeholder-yellow-200/70"
               onFocus={() => setIsExpanded(true)}
             />
+            {!isExpanded && (
+              <Plus className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700 dark:text-yellow-200" size={20} />
+            )}
           </div>
           
           {isExpanded && (
             <motion.div 
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
               className="space-y-4"
             >
               <div className="flex flex-col sm:flex-row sm:space-x-3 space-y-3 sm:space-y-0">
                 <div className="flex-1">
-                  <label className="block mb-1 font-bold text-black dark:text-white">Category</label>
+                  <label className="block mb-1 font-bold text-black dark:text-yellow-100">Category</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full p-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
+                    className="w-full p-2 border-2 border-black dark:border-yellow-300 bg-white dark:bg-gray-900 text-black dark:text-yellow-50 focus:outline-none cursor-pointer"
                   >
                     {categories.map((cat) => (
                       <option key={cat} value={cat}>{cat}</option>
@@ -75,12 +81,12 @@ const TaskForm: React.FC = () => {
                 </div>
                 
                 <div className="flex-1">
-                  <label className="block mb-1 font-bold text-black dark:text-white">Due Date</label>
+                  <label className="block mb-1 font-bold text-black dark:text-yellow-100">Due Date</label>
                   <input
                     type="date"
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
-                    className="w-full p-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
+                    className="w-full p-2 border-2 border-black dark:border-yellow-300 bg-white dark:bg-gray-900 text-black dark:text-yellow-50 focus:outline-none"
                   />
                 </div>
               </div>
@@ -96,15 +102,18 @@ const TaskForm: React.FC = () => {
                       setDueDate('');
                     }
                   }}
-                  className="px-4 py-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                  className="flex items-center px-4 py-2 border-2 border-black dark:border-yellow-300 bg-white dark:bg-gray-900 text-black dark:text-yellow-50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
                 >
+                  <X size={18} className="mr-1" />
                   Cancel
                 </button>
                 
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-black dark:bg-white text-white dark:text-black border-2 border-black dark:border-gray-700 hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200"
+                  disabled={!title.trim()}
+                  className="flex items-center px-4 py-2 border-2 border-black dark:border-yellow-300 bg-black dark:bg-yellow-300 text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-yellow-400 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
+                  <Plus size={18} className="mr-1" />
                   Add Task
                 </button>
               </div>

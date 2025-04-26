@@ -37,7 +37,7 @@ const Dashboard: React.FC = () => {
         <DashboardCard 
           title="Today's Tasks" 
           icon={<CheckSquareIcon size={24} />}
-          color="bg-purple-100"
+          color={{ light: "bg-purple-100", dark: "bg-purple-900/50" }}
           delay={0}
         >
           <div className="mt-3">
@@ -54,20 +54,24 @@ const Dashboard: React.FC = () => {
                 ))}
                 <Link to="/tasks">
                   <motion.button
-                    className="w-full p-2 mt-2 border-2 border-black bg-purple-200 hover:bg-purple-300 transition-colors duration-200"
+                    className="w-full p-2 mt-4 border-2 border-gray-300 dark:border-gray-500 
+                          bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 
+                          text-gray-800 dark:text-gray-200 transition-colors duration-200
+                          rounded-lg"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
                     View All Tasks
+                    
                   </motion.button>
                 </Link>
               </div>
             ) : (
-              <div className="text-center p-6 border-2 border-dashed border-gray-300">
-                <p className="text-gray-500 mb-3">No tasks due today!</p>
+              <div className="text-center p-6 border-2 border-dashed border-gray-300 dark:border-gray-700">
+                <p className="text-gray-500 dark:text-gray-400 mb-3">No tasks due today!</p>
                 <Link to="/tasks">
                   <motion.button
-                    className="p-2 border-2 border-black bg-purple-200 hover:bg-purple-300 transition-colors duration-200"
+                    className="p-2 border-2 border-black dark:border-white bg-purple-200 hover:bg-purple-300 dark:bg-purple-800 dark:hover:bg-purple-700 transition-colors duration-200 dark:text-white"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -82,14 +86,17 @@ const Dashboard: React.FC = () => {
         <DashboardCard 
           title="Budget Overview" 
           icon={<DollarSignIcon size={24} />}
-          color="bg-blue-100"
+          color={{ light: "bg-blue-100", dark: "bg-blue-900/50" }}
           delay={1}
         >
           <div className="mt-3">
             <BudgetSummary />
             <Link to="/budget">
               <motion.button
-                className="w-full p-2 mt-4 border-2 border-black bg-blue-200 hover:bg-blue-300 transition-colors duration-200"
+                className="w-full p-2 mt-4 border-2 border-gray-300 dark:border-gray-500 
+                          bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 
+                          text-gray-800 dark:text-gray-200 transition-colors duration-200
+                          rounded-lg"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -102,7 +109,7 @@ const Dashboard: React.FC = () => {
         <DashboardCard 
           title="Saving Goals" 
           icon={<PiggyBankIcon size={24} />}
-          color="bg-yellow-100"
+          color={{ light: "bg-yellow-100", dark: "bg-yellow-900/50" }}
           delay={2}
         >
           <div className="mt-3">
@@ -118,7 +125,10 @@ const Dashboard: React.FC = () => {
                 ))}
                 <Link to="/savings">
                   <motion.button
-                    className="w-full p-2 mt-4 border-2 border-black bg-yellow-200 hover:bg-yellow-300 transition-colors duration-200"
+                    className="w-full p-2 mt-4 border-2 border-gray-300 dark:border-gray-500 
+                          bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 
+                          text-gray-800 dark:text-gray-200 transition-colors duration-200
+                          rounded-lg"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -127,11 +137,11 @@ const Dashboard: React.FC = () => {
                 </Link>
               </div>
             ) : (
-              <div className="text-center p-6 border-2 border-dashed border-gray-300">
-                <p className="text-gray-500 mb-3">No saving goals yet!</p>
+              <div className="text-center p-6 border-2 border-dashed border-gray-300 dark:border-gray-700">
+                <p className="text-gray-500 dark:text-gray-400 mb-3">No saving goals yet!</p>
                 <Link to="/savings">
                   <motion.button
-                    className="p-2 border-2 border-black bg-yellow-200 hover:bg-yellow-300 transition-colors duration-200"
+                    className="p-2 border-2 border-black dark:border-white bg-yellow-200 hover:bg-yellow-300 dark:bg-yellow-800 dark:hover:bg-yellow-700 transition-colors duration-200 dark:text-white"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
