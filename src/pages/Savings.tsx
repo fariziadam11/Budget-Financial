@@ -73,7 +73,7 @@ const Savings: React.FC = () => {
       
       {savingGoals.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {savingGoals.map((goal, index) => (
+          {savingGoals.map((goal) => (
             <SavingGoalCard
               key={goal.id}
               goal={goal}

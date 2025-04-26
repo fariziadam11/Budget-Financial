@@ -7,10 +7,11 @@ import {
   Legend, 
   CategoryScale, 
   LinearScale, 
-  BarElement 
+  BarElement,
+  ChartOptions
 } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
-import { useTheme } from '../../context/ThemeContext'; // Assuming you have a ThemeContext
+import { useTheme } from '../../context/ThemeContext';
 
 ChartJS.register(
   ArcElement, 
@@ -23,7 +24,7 @@ ChartJS.register(
 
 const BudgetSummary: React.FC = () => {
   const { getIncome, getExpenses, getBalance, transactions } = useStoreContext();
-  const { theme } = useTheme(); // Get the current theme
+  const { theme } = useTheme();
   
   const income = getIncome();
   const expenses = getExpenses();
@@ -43,7 +44,7 @@ const BudgetSummary: React.FC = () => {
     '#FF9F40', '#8AC926', '#1982C4', '#6A4C93', '#F94144'
   ];
   
-  const categories = Object.keys(expensesByCategory).slice(0, 5); // Limit to top 5
+  const categories = Object.keys(expensesByCategory).slice(0, 5);
   const categoryValues = categories.map(cat => expensesByCategory[cat]);
   
   const chartData = {
@@ -72,11 +73,13 @@ const BudgetSummary: React.FC = () => {
     ],
   };
 
-  // Chart options
-  const chartOptions = {
+  // Chart options with proper typing
+  const chartOptions: ChartOptions<'doughnut'> = {
+    responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'right' as const,
+        position: 'right',
         labels: {
           font: {
             family: 'Inter',
@@ -88,7 +91,9 @@ const BudgetSummary: React.FC = () => {
     },
   };
 
-  const barChartOptions = {
+  const barChartOptions: ChartOptions<'bar'> = {
+    responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
@@ -135,18 +140,37 @@ const BudgetSummary: React.FC = () => {
       <div className="grid grid-cols-3 gap-4">
         <div className="p-4 border-4 border-black dark:border-gray-700 bg-green-100 dark:bg-green-900/50">
           <p className="text-sm font-bold mb-1 text-black dark:text-white">Income</p>
-          <p className="text-xl font-bold text-green-600 dark:text-green-400">${income.toFixed(2)}</p>
+          <p className="text-xl font-bold text-green-600 dark:text-green-400">
+            {income.toLocaleString(undefined, {
+              style: 'currency',
+              currency: 'USD',
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            })}
+          </p>
         </div>
         
         <div className="p-4 border-4 border-black dark:border-gray-700 bg-red-100 dark:bg-red-900/50">
           <p className="text-sm font-bold mb-1 text-black dark:text-white">Expenses</p>
-          <p className="text-xl font-bold text-red-600 dark:text-red-400">${expenses.toFixed(2)}</p>
+          <p className="text-xl font-bold text-red-600 dark:text-red-400">
+            {expenses.toLocaleString(undefined, {
+              style: 'currency',
+              currency: 'USD',
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            })}
+          </p>
         </div>
         
         <div className="p-4 border-4 border-black dark:border-gray-700 bg-blue-100 dark:bg-blue-900/50">
           <p className="text-sm font-bold mb-1 text-black dark:text-white">Balance</p>
           <p className={`text-xl font-bold ${balance >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-            ${balance.toFixed(2)}
+            {balance.toLocaleString(undefined, {
+              style: 'currency',
+              currency: 'USD',
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            })}
           </p>
         </div>
       </div>
@@ -156,7 +180,10 @@ const BudgetSummary: React.FC = () => {
           <div className="p-4 border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800">
             <h3 className="text-lg font-bold mb-3 text-black dark:text-white">Top Expense Categories</h3>
             <div className="h-64">
-              <Doughnut data={chartData} options={chartOptions} />
+              <Doughnut 
+                data={chartData} 
+                options={chartOptions}
+              />
             </div>
           </div>
         )}

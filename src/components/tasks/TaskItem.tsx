@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Task } from '../../types';
-import { Check, Trash, Edit, Calendar, AlertCircle, X } from 'lucide-react';
+import { Check, Trash, Edit, Calendar, AlertCircle} from 'lucide-react';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 

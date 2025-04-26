@@ -1,7 +1,6 @@
 import React from 'react';
 import { useStoreContext } from '../context/StoreContext';
-import { 
-  HomeIcon, 
+import {  
   CheckSquareIcon,
   DollarSignIcon,
   PiggyBankIcon

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { SavingGoal } from '../../types';
 import { format, formatDistanceToNow } from 'date-fns';
 import { motion } from 'framer-motion';
@@ -10,7 +10,11 @@ interface SavingGoalCardProps {
   onContribute: (id: string, amount: number) => void;
 }
 
-const SavingGoalCard: React.FC<SavingGoalCardProps> = ({ goal, onDelete, onContribute }) => {
+const SavingGoalCard: React.FC<SavingGoalCardProps> = ({ 
+  goal, 
+  onDelete, 
+  onContribute 
+}) => {
   const [isContributing, setIsContributing] = useState(false);
   const [contributionAmount, setContributionAmount] = useState('');
   
@@ -25,14 +29,29 @@ const SavingGoalCard: React.FC<SavingGoalCardProps> = ({ goal, onDelete, onContr
   const deadlineDate = new Date(goal.deadline);
   const isOverdue = deadlineDate < new Date() && !isComplete;
   
-  const handleContribute = () => {
+  const handleContribute = useCallback(() => {
     const amount = parseFloat(contributionAmount);
     if (isNaN(amount) || amount <= 0) return;
     
     onContribute(goal.id, amount);
     setContributionAmount('');
     setIsContributing(false);
-  };
+  }, [contributionAmount, goal.id, onContribute]);
+
+  const handleDelete = useCallback(() => {
+    onDelete(goal.id);
+  }, [goal.id, onDelete]);
+
+  const toggleContribute = useCallback(() => {
+    setIsContributing(prev => !prev);
+  }, []);
+
+  const handleAmountChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setContributionAmount(e.target.value);
+    },
+    []
+  );
 
   return (
     <motion.div 
@@ -46,12 +65,19 @@ const SavingGoalCard: React.FC<SavingGoalCardProps> = ({ goal, onDelete, onContr
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.01 }}
+      aria-labelledby={`goal-${goal.id}-title`}
     >
       <div className="flex justify-between items-start mb-3">
-        <h3 className="text-xl font-bold text-black dark:text-white">{goal.name}</h3>
+        <h3 
+          id={`goal-${goal.id}-title`}
+          className="text-xl font-bold text-black dark:text-white"
+        >
+          {goal.name}
+        </h3>
         <button
-          onClick={() => onDelete(goal.id)}
+          onClick={handleDelete}
           className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors duration-200"
+          aria-label={`Delete ${goal.name} goal`}
         >
           <Trash size={18} />
         </button>
@@ -63,7 +89,13 @@ const SavingGoalCard: React.FC<SavingGoalCardProps> = ({ goal, onDelete, onContr
             <span className="font-medium text-black dark:text-white">Progress</span>
             <span className="text-black dark:text-white">{progressPercentage}%</span>
           </div>
-          <div className="w-full h-8 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800">
+          <div 
+            className="w-full h-8 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800"
+            role="progressbar"
+            aria-valuenow={progressPercentage}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          >
             <motion.div 
               className={`h-full ${
                 isComplete 
@@ -82,18 +114,39 @@ const SavingGoalCard: React.FC<SavingGoalCardProps> = ({ goal, onDelete, onContr
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Target</p>
-            <p className="text-xl font-bold text-black dark:text-white">${goal.targetAmount.toFixed(2)}</p>
+            <p className="text-xl font-bold text-black dark:text-white">
+              {goal.targetAmount.toLocaleString(undefined, {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              })}
+            </p>
           </div>
           <div>
             <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Current</p>
-            <p className="text-xl font-bold text-black dark:text-white">${goal.currentAmount.toFixed(2)}</p>
+            <p className="text-xl font-bold text-black dark:text-white">
+              {goal.currentAmount.toLocaleString(undefined, {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              })}
+            </p>
           </div>
         </div>
         
         {!isComplete && (
           <div>
             <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Remaining</p>
-            <p className="text-xl font-bold text-red-600 dark:text-red-400">${remaining.toFixed(2)}</p>
+            <p className="text-xl font-bold text-red-600 dark:text-red-400">
+              {remaining.toLocaleString(undefined, {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              })}
+            </p>
           </div>
         )}
         
@@ -110,18 +163,35 @@ const SavingGoalCard: React.FC<SavingGoalCardProps> = ({ goal, onDelete, onContr
           </p>
         </div>
         
-        {!isComplete && (
+        {isContributing && (
+          <div className="flex gap-2">
+            <input
+              type="number"
+              value={contributionAmount}
+              onChange={handleAmountChange}
+              className="flex-1 border-2 border-black dark:border-gray-700 p-2"
+              placeholder="Amount"
+              min="0.01"
+              step="0.01"
+              aria-label="Contribution amount"
+            />
+            <button
+              onClick={handleContribute}
+              className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 border-2 border-black dark:border-gray-700"
+            >
+              Add
+            </button>
+          </div>
+        )}
+        
+        {!isComplete && !isContributing && (
           <button
-            onClick={() => setIsContributing(true)}
-            disabled={isComplete}
-            className={`w-full py-2 mt-2 flex items-center justify-center ${
-              isComplete 
-                ? 'bg-gray-300 dark:bg-gray-700 cursor-not-allowed' 
-                : 'bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200'
-            } transition-colors duration-200 border-2 border-black dark:border-gray-700`}
+            onClick={toggleContribute}
+            className="w-full py-2 mt-2 flex items-center justify-center bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 border-2 border-black dark:border-gray-700"
+            aria-label={`Add money to ${goal.name} goal`}
           >
             <Plus size={16} className="mr-1" />
-            {isComplete ? 'Goal Completed!' : 'Add Money'}
+            Add Money
           </button>
         )}
       </div>
@@ -129,4 +199,4 @@ const SavingGoalCard: React.FC<SavingGoalCardProps> = ({ goal, onDelete, onContr
   );
 };
 
-export default SavingGoalCard;
+export default React.memo(SavingGoalCard);

@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { HomeIcon, CheckSquareIcon, DollarSignIcon, PiggyBankIcon} from 'lucide-react';
-import { motion } from 'framer-motion';
 
 interface SidebarProps {
   onNavItemClick?: () => void;
