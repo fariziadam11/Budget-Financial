@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { SavingGoal } from '../../types';
 import { format, formatDistanceToNow } from 'date-fns';
 import { motion } from 'framer-motion';
-import { Trash, Plus } from 'lucide-react';
+import { Trash, Plus, ArrowRight } from 'lucide-react';
 
 interface SavingGoalCardProps {
   goal: SavingGoal;
@@ -17,6 +17,7 @@ const SavingGoalCard: React.FC<SavingGoalCardProps> = ({
 }) => {
   const [isContributing, setIsContributing] = useState(false);
   const [contributionAmount, setContributionAmount] = useState('');
+  const [isButtonHovered, setIsButtonHovered] = useState(false);
   
   const progressPercentage = Math.min(
     Math.round((goal.currentAmount / goal.targetAmount) * 100),
@@ -164,35 +165,61 @@ const SavingGoalCard: React.FC<SavingGoalCardProps> = ({
         </div>
         
         {isContributing && (
-          <div className="flex gap-2">
-            <input
-              type="number"
-              value={contributionAmount}
-              onChange={handleAmountChange}
-              className="flex-1 border-2 border-black dark:border-gray-700 p-2"
-              placeholder="Amount"
-              min="0.01"
-              step="0.01"
-              aria-label="Contribution amount"
-            />
-            <button
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-2 mt-2"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="relative flex-1">
+              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black dark:text-white">$</span>
+              <input
+                type="number"
+                value={contributionAmount}
+                onChange={handleAmountChange}
+                className="flex-1 w-full border-2 border-black dark:border-gray-700 p-2 pl-8 rounded-lg"
+                placeholder="Amount"
+                min="0.01"
+                step="0.01"
+                aria-label="Contribution amount"
+              />
+            </div>
+            <motion.button
               onClick={handleContribute}
-              className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 border-2 border-black dark:border-gray-700"
+              className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 border-2 border-black dark:border-gray-700 rounded-lg font-medium flex items-center justify-center"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              disabled={!contributionAmount || parseFloat(contributionAmount) <= 0}
             >
-              Add
-            </button>
-          </div>
+              <span>Add</span>
+              <ArrowRight size={16} className="ml-2" />
+            </motion.button>
+          </motion.div>
         )}
         
         {!isComplete && !isContributing && (
-          <button
+          <motion.button
             onClick={toggleContribute}
-            className="w-full py-2 mt-2 flex items-center justify-center bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 border-2 border-black dark:border-gray-700"
+            onMouseEnter={() => setIsButtonHovered(true)}
+            onMouseLeave={() => setIsButtonHovered(false)}
+            className="w-full py-3 mt-4 flex items-center justify-center bg-black dark:bg-white text-white dark:text-black transition-all duration-300 border-2 border-black dark:border-gray-700 rounded-lg font-medium shadow-md hover:shadow-lg"
+            whileHover={{ 
+              scale: 1.03,
+              backgroundColor: isOverdue ? '#ef4444' : '#3b82f6',
+              color: 'white'
+            }}
+            whileTap={{ scale: 0.97 }}
             aria-label={`Add money to ${goal.name} goal`}
           >
-            <Plus size={16} className="mr-1" />
-            Add Money
-          </button>
+            <motion.div 
+              className="flex items-center"
+              animate={{ x: isButtonHovered ? 5 : 0 }}
+              transition={{ type: "spring", stiffness: 500, damping: 15 }}
+            >
+              <Plus size={20} className="mr-2" />
+              <span className="text-lg">Add Money</span>
+            </motion.div>
+          </motion.button>
         )}
       </div>
     </motion.div>
