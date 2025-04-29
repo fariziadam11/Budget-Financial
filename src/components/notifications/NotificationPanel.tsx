@@ -40,33 +40,49 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
     notifications,
     markNotificationAsRead,
     deleteNotification,
-    clearAllNotifications
+    clearAllNotifications,
+    markAllNotificationsAsRead
   } = useStoreContext();
 
   return (
     <motion.div 
-      className="bg-white dark:bg-gray-900 border-4 border-black dark:border-gray-700 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)] w-full max-w-md max-h-[80vh] md:max-h-[600px] flex flex-col"
+      role="dialog"
+      aria-modal="true"
+      className="backdrop-blur-lg bg-white/80 dark:bg-gray-900/80 border-4 border-yellow-400 dark:border-yellow-600 shadow-2xl rounded-3xl w-full max-w-md max-h-[80vh] md:max-h-[600px] flex flex-col transition-all duration-300"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.2 }}
     >
       {/* Header */}
-      <div className="p-4 border-b-4 border-black dark:border-gray-700 flex justify-between items-center bg-white dark:bg-gray-900">
-        <h2 className="text-xl font-bold text-black dark:text-white flex items-center">
-          <Bell className="mr-2" size={20} />
+      <div className="p-4 border-b-4 border-yellow-400 dark:border-yellow-600 flex justify-between items-center bg-white/90 dark:bg-gray-900/90 rounded-t-2xl">
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 tracking-tight">
+          <Bell className="mr-1" size={22} />
           Notifications
           {notifications.length > 0 && (
-            <span className="ml-2 px-2 py-0.5 bg-black dark:bg-white text-white dark:text-black text-xs rounded-full">
+            <motion.span
+              className="ml-2 px-2 py-0.5 bg-gradient-to-r from-yellow-400 to-yellow-600 dark:from-yellow-600 dark:to-yellow-400 text-white text-xs rounded-full shadow animate-bounce"
+              animate={{ scale: [1, 1.15, 1] }}
+              transition={{ repeat: Infinity, duration: 1.3, ease: "easeInOut" }}
+            >
               {notifications.length}
-            </span>
+            </motion.span>
           )}
         </h2>
-        <div className="flex space-x-2">
+        <div className="flex items-center gap-2">
+          {notifications.some(n => !n.read) && notifications.length > 0 && (
+            <button
+              onClick={markAllNotificationsAsRead}
+              className="p-2 rounded-full border-2 border-green-400 dark:border-green-500 bg-white/80 dark:bg-gray-900/80 hover:bg-green-500 dark:hover:bg-green-600 hover:text-white transition-colors duration-200 shadow-md"
+              aria-label="Mark all as read"
+            >
+              <Check size={16} />
+            </button>
+          )}
           {notifications.length > 0 && (
             <button
               onClick={clearAllNotifications}
-              className="p-2 border-2 border-red-500 dark:border-red-400 hover:bg-red-500 dark:hover:bg-red-400 hover:text-white transition-colors duration-200 dark:text-red-500"
+              className="p-2 rounded-full border-2 border-red-400 dark:border-red-500 bg-white/80 dark:bg-gray-900/80 hover:bg-red-500 dark:hover:bg-red-600 hover:text-white transition-colors duration-200 shadow-md"
               aria-label="Clear all notifications"
             >
               <Trash2 size={16} />
@@ -74,7 +90,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
           )}
           <button
             onClick={onClose}
-            className="p-2 border-2 border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-colors duration-200 dark:text-white"
+            className="p-2 rounded-full border-2 border-yellow-400 dark:border-yellow-500 bg-white/80 dark:bg-gray-900/80 hover:bg-yellow-400 dark:hover:bg-yellow-700 hover:text-white transition-colors duration-200 shadow-md"
             aria-label="Close notifications"
           >
             <X size={16} />
@@ -83,13 +99,13 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
       </div>
       
       {/* Content */}
-      <div className="overflow-y-auto flex-1 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-900">
+      <div className="overflow-y-auto flex-1 divide-y divide-gray-100 dark:divide-gray-800 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-50 dark:scrollbar-thumb-gray-700 dark:scrollbar-track-gray-900">
         {notifications.length === 0 ? (
-          <div className="p-8 text-center flex flex-col items-center">
-            <Bell size={48} className="text-gray-400 dark:text-gray-600 mb-4" />
-            <p className="text-gray-500 dark:text-gray-400">No notifications yet</p>
-            <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
-              We'll notify you when something important happens
+          <div className="py-12 text-center flex flex-col items-center justify-center">
+            <Bell size={44} className="text-gray-300 dark:text-gray-700 mb-3" />
+            <p className="text-base text-gray-500 dark:text-gray-400 font-medium">No notifications yet</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+              You'll see important updates here
             </p>
           </div>
         ) : (

@@ -199,6 +199,12 @@ export const useStore = () => {
     setNotifications(notifications.filter(notification => notification.userId !== userId));
   };
 
+  const markAllNotificationsAsRead = () => {
+    setNotifications(notifications.map(notification =>
+      notification.userId === userId ? { ...notification, read: true } : notification
+    ));
+  };
+
   // Computed values
   const getTodaysTasks = () => {
     const today = new Date().toISOString().split('T')[0];
@@ -272,6 +278,7 @@ export const useStore = () => {
     markNotificationAsRead,
     deleteNotification,
     clearAllNotifications,
+    markAllNotificationsAsRead,
     
     // Computed values
     getTodaysTasks,

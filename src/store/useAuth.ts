@@ -1,10 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { User, AuthState } from '../types';
 
 const USERS_STORAGE_KEY = 'budgetboss_users';
 const AUTH_STORAGE_KEY = 'budgetboss_auth';
 
+/**
+ * Hash a string using SHA-256. Used for password hashing.
+ * @param str - The string to hash
+ */
+const hashString = async (str: string): Promise<string> => {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(str);
+  const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+};
+
+/**
+ * Custom React hook for authentication logic.
+ * Provides register, login, logout, and current auth state.
+ */
 export const useAuth = () => {
   const [authState, setAuthState] = useState<AuthState>(() => {
     const savedAuth = localStorage.getItem(AUTH_STORAGE_KEY);
@@ -15,55 +30,75 @@ export const useAuth = () => {
     localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(authState));
   }, [authState]);
 
-  const getUsers = (): User[] => {
+  /**
+   * Get all users from localStorage.
+   */
+  const getUsers = useCallback((): User[] => {
     const users = localStorage.getItem(USERS_STORAGE_KEY);
     return users ? JSON.parse(users) : [];
-  };
+  }, []);
 
-  const saveUsers = (users: User[]) => {
+  /**
+   * Save all users to localStorage.
+   */
+  const saveUsers = useCallback((users: User[]) => {
     localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
-  };
+  }, []);
 
-  const register = (email: string, password: string, name: string) => {
+  /**
+   * Register a new user.
+   * @throws Error if email already exists.
+   */
+  const register = useCallback(async (email: string, password: string, name: string): Promise<User> => {
     const users = getUsers();
-    
     if (users.some(user => user.email === email)) {
       throw new Error('Email already exists');
     }
-
+    const hashedPassword = await hashString(password);
     const newUser: User = {
       id: uuidv4(),
       email,
-      password,
+      password: hashedPassword,
       name,
       createdAt: new Date().toISOString(),
     };
-
     saveUsers([...users, newUser]);
     setAuthState({ user: newUser, isAuthenticated: true });
     return newUser;
-  };
+  }, [getUsers, saveUsers]);
 
-  const login = (email: string, password: string) => {
+  /**
+   * Login a user.
+   * @throws Error if credentials are invalid.
+   */
+  const login = useCallback(async (email: string, password: string): Promise<User> => {
     const users = getUsers();
-    const user = users.find(u => u.email === email && u.password === password);
-    
+    const hashedPassword = await hashString(password);
+    const user = users.find(u => u.email === email && u.password === hashedPassword);
     if (!user) {
       throw new Error('Invalid credentials');
     }
-
     setAuthState({ user, isAuthenticated: true });
     return user;
-  };
+  }, [getUsers]);
 
-  const logout = () => {
+  /**
+   * Logout the current user.
+   */
+  const logout = useCallback(() => {
     setAuthState({ user: null, isAuthenticated: false });
-  };
+  }, []);
 
-  return {
+  /**
+   * Memoized return value for hook consumers.
+   */
+  return useMemo(() => ({
     ...authState,
+    /** Register a new user (async). */
     register,
+    /** Login with email and password (async). */
     login,
+    /** Logout the current user. */
     logout,
-  };
+  }), [authState, register, login, logout]);
 };
