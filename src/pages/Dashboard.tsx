@@ -77,32 +77,32 @@ const Dashboard: React.FC = () => {
   return (
     <>
       <Toaster position="top-right" toastOptions={{ duration: 2200 }} />
-      <div className="mb-8">
-        <h1 className="text-4xl font-black tracking-tight text-black dark:text-white">DASHBOARD</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">Your daily financial and task overview</p>
+      <div className="mb-4 sm:mb-6 md:mb-8">
+        <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-black dark:text-white">DASHBOARD</h1>
+        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">Your daily financial and task overview</p>
       {/* Mind blowing stats section */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        <div className="bg-gradient-to-tr from-yellow-200 to-yellow-400 dark:from-yellow-800 dark:to-yellow-600 rounded-xl shadow-lg p-6 text-center">
-          <span className="block text-lg font-bold text-gray-700 dark:text-yellow-100 mb-1">Tasks Today</span>
-          <span className="text-4xl font-black text-yellow-700 dark:text-yellow-200">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6 md:mb-8">
+        <div className="bg-gradient-to-tr from-yellow-200 to-yellow-400 dark:from-yellow-800 dark:to-yellow-600 rounded-xl shadow-lg p-4 sm:p-5 md:p-6 text-center">
+          <span className="block text-base sm:text-lg font-bold text-gray-700 dark:text-yellow-100 mb-1">Tasks Today</span>
+          <span className="text-3xl sm:text-4xl font-black text-yellow-700 dark:text-yellow-200">
             <AnimatedCounter value={todaysTasks.length} />
           </span>
         </div>
-        <div className="bg-gradient-to-tr from-purple-200 to-purple-400 dark:from-purple-800 dark:to-purple-600 rounded-xl shadow-lg p-6 text-center">
-          <span className="block text-lg font-bold text-gray-700 dark:text-purple-100 mb-1">Saving Goals</span>
-          <span className="text-4xl font-black text-purple-700 dark:text-purple-200">
+        <div className="bg-gradient-to-tr from-purple-200 to-purple-400 dark:from-purple-800 dark:to-purple-600 rounded-xl shadow-lg p-4 sm:p-5 md:p-6 text-center">
+          <span className="block text-base sm:text-lg font-bold text-gray-700 dark:text-purple-100 mb-1">Saving Goals</span>
+          <span className="text-3xl sm:text-4xl font-black text-purple-700 dark:text-purple-200">
             <AnimatedCounter value={savingGoals.length} />
           </span>
         </div>
-        <div className="bg-gradient-to-tr from-blue-200 to-blue-400 dark:from-blue-800 dark:to-blue-600 rounded-xl shadow-lg p-6 text-center">
-          <span className="block text-lg font-bold text-gray-700 dark:text-blue-100 mb-1">Completed Tasks</span>
-          <span className="text-4xl font-black text-blue-700 dark:text-blue-200">
+        <div className="bg-gradient-to-tr from-blue-200 to-blue-400 dark:from-blue-800 dark:to-blue-600 rounded-xl shadow-lg p-4 sm:p-5 md:p-6 text-center">
+          <span className="block text-base sm:text-lg font-bold text-gray-700 dark:text-blue-100 mb-1">Completed Tasks</span>
+          <span className="text-3xl sm:text-4xl font-black text-blue-700 dark:text-blue-200">
             <AnimatedCounter value={todaysTasks.filter(t => t.completed).length} />
           </span>
         </div>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
         <DashboardCard 
           title="Today's Tasks" 
           icon={<CheckSquareIcon size={24} />}
