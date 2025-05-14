@@ -57,12 +57,18 @@ export const fetchExchangeRates = async (): Promise<ExchangeRates> => {
     
     const data = await response.json();
     
-    // Convert rates to have IDR as base (data.rates contains rates with IDR as base)
+    // Check if the API response is valid and has the expected structure
+    if (!data || data.result !== 'success' || !data.conversion_rates) {
+      console.error('Invalid API response format:', data);
+      throw new Error('Invalid API response format');
+    }
+    
+    // Convert rates to have IDR as base
     // The API returns rates like USD: 0.0000645 (meaning 1 IDR = 0.0000645 USD)
     // We want to store the inverse (1 USD = 15,500 IDR)
     const rates: ExchangeRates = {};
     
-    for (const [currency, rate] of Object.entries(data.rates)) {
+    for (const [currency, rate] of Object.entries(data.conversion_rates)) {
       if (currency !== 'IDR') {
         // Store as: 1 CURRENCY = X IDR
         rates[currency] = 1 / (rate as number);
