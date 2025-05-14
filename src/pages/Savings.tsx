@@ -1,9 +1,11 @@
 import React from 'react';
 import { useStoreContext } from '../context/StoreContext';
+import { useCurrency } from '../context/CurrencyContext';
 import SavingGoalForm from '../components/savings/SavingGoalForm';
 import SavingGoalCard from '../components/savings/SavingGoalCard';
 import { PiggyBank, TrendingUp, Target, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
+import CurrencyToggle from '../components/CurrencyToggle';
 
 const Savings: React.FC = () => {
   const { 
@@ -11,6 +13,8 @@ const Savings: React.FC = () => {
     deleteSavingGoal, 
     contributeTosavingGoal 
   } = useStoreContext();
+  
+  const { convertToDisplay, formatDisplay } = useCurrency();
 
   // Calculate totals
   const totalSaved = savingGoals.reduce((sum, goal) => sum + goal.currentAmount, 0);
@@ -27,13 +31,18 @@ const Savings: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <h1 className="text-4xl font-black tracking-tight flex items-center dark:text-white">
-          <PiggyBank size={36} className="mr-3 text-yellow-500 dark:text-yellow-400" />
-          SAVINGS
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
-          Track your saving goals and progress towards financial milestones
-        </p>
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-4xl font-black tracking-tight flex items-center dark:text-white">
+              <PiggyBank size={36} className="mr-3 text-yellow-500 dark:text-yellow-400" />
+              SAVINGS
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-1">
+              Track your saving goals and progress towards financial milestones
+            </p>
+          </div>
+          <CurrencyToggle />
+        </div>
       </motion.div>
       
       {/* Summary Cards */}
@@ -55,12 +64,7 @@ const Savings: React.FC = () => {
                 <p className="text-lg font-bold text-black dark:text-white">Total Saved</p>
               </div>
               <p className="text-2xl font-black text-green-600 dark:text-green-400">
-                {totalSaved.toLocaleString(undefined, {
-                  style: 'currency',
-                  currency: 'USD',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                })}
+                {formatDisplay(convertToDisplay(totalSaved))}
               </p>
             </motion.div>
             
@@ -74,12 +78,7 @@ const Savings: React.FC = () => {
                 <p className="text-lg font-bold text-black dark:text-white">Total Goals</p>
               </div>
               <p className="text-2xl font-black text-black dark:text-white">
-                {totalTargets.toLocaleString(undefined, {
-                  style: 'currency',
-                  currency: 'USD',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                })}
+                {formatDisplay(convertToDisplay(totalTargets))}
               </p>
             </motion.div>
             

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useStoreContext } from '../../context/StoreContext';
+import { useCurrency } from '../../context/CurrencyContext';
 import { format } from 'date-fns';
 import { ArrowDownCircle, ArrowUpCircle, Trash } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Transaction } from '../../types';
+import CurrencyToggle from '../CurrencyToggle';
 
 interface TransactionListProps {
   showFilters?: boolean;
@@ -52,6 +54,12 @@ const TransactionList: React.FC<TransactionListProps> = ({ showFilters = true })
     <div className="border-4 border-black dark:border-gray-700 bg-white dark:bg-gray-800">
       {showFilters && (
         <div className="p-4 border-b-4 border-black dark:border-gray-700 bg-gray-100 dark:bg-gray-900">
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-base font-medium text-gray-800 dark:text-gray-200">
+              Transaction Filters
+            </h3>
+            <CurrencyToggle compact />
+          </div>
           <div className="flex flex-wrap gap-3">
             <div>
               <label className="block mb-1 text-sm font-bold text-black dark:text-white">Type</label>
@@ -128,6 +136,7 @@ interface TransactionItemProps {
 }
 
 const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, onDelete }) => {
+  const { convertToDisplay, formatDisplay } = useCurrency();
   return (
     <motion.div 
       className={`p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200`}
@@ -160,9 +169,10 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, onDelete
         
         <div className="flex items-center">
           <span className={`font-bold mr-4 ${
-            transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
+            transaction.type === 'income' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
           }`}>
-            {transaction.type === 'income' ? '+' : '-'}${transaction.amount.toFixed(2)}
+            {transaction.type === 'income' ? '+' : '-'}
+            {formatDisplay(convertToDisplay(transaction.amount))}
           </span>
           
           <button

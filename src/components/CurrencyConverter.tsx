@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   toIdr, 
   fromIdr, 
@@ -7,11 +7,17 @@ import {
   fetchExchangeRates, 
   getAvailableCurrencies 
 } from '../utils/currencyConverter';
+import { 
+  formatCurrencyInput, 
+  parseCurrencyInput, 
+  handleCurrencyInputChange 
+} from '../utils/currencyInputFormatter';
 import { motion } from 'framer-motion';
 import { ArrowDownIcon, ArrowUpIcon, RefreshCwIcon, LoaderIcon } from 'lucide-react';
 
 const CurrencyConverter: React.FC = () => {
   const [amount, setAmount] = useState<string>('1');
+  const [formattedAmount, setFormattedAmount] = useState<string>('1.00');
   const [fromCurrency, setFromCurrency] = useState<string>('USD');
   const [toCurrency, setToCurrency] = useState<string>('IDR');
   const [result, setResult] = useState<string>('');
@@ -41,6 +47,35 @@ const CurrencyConverter: React.FC = () => {
     }
   };
   
+  // Format the amount input when currency changes
+  useEffect(() => {
+    if (amount) {
+      const numAmount = parseFloat(amount);
+      if (!isNaN(numAmount)) {
+        setFormattedAmount(formatCurrencyInput(numAmount, fromCurrency));
+      }
+    }
+  }, [amount, fromCurrency]);
+
+  // Handle amount input change with proper formatting
+  const handleAmountChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    
+    // Allow empty input
+    if (inputValue === '') {
+      setAmount('');
+      setFormattedAmount('');
+      return;
+    }
+    
+    // Format the input based on the selected currency
+    handleCurrencyInputChange(inputValue, fromCurrency, (formattedValue) => {
+      setFormattedAmount(formattedValue);
+      // Store the actual numeric value for calculations
+      setAmount(parseCurrencyInput(formattedValue, fromCurrency).toString());
+    });
+  }, [fromCurrency]);
+
   // Convert currency whenever inputs change
   useEffect(() => {
     if (!amount || isNaN(Number(amount))) {
@@ -73,10 +108,35 @@ const CurrencyConverter: React.FC = () => {
   }, [amount, fromCurrency, toCurrency]);
 
   // Swap currencies
-  const handleSwapCurrencies = () => {
+  const handleSwapCurrencies = useCallback(() => {
+    // Save the current amount value before swapping
+    const currentAmount = amount;
+    
+    // Swap the currencies
     setFromCurrency(toCurrency);
     setToCurrency(fromCurrency);
-  };
+    
+    // If we have a result, use it as the new input amount
+    if (result) {
+      try {
+        // Extract the numeric value from the result
+        const resultNumeric = parseCurrencyInput(
+          result.replace(/[^\d,.]/g, ''), // Remove currency symbols
+          toCurrency
+        );
+        
+        // Update the amount with the result value
+        setAmount(resultNumeric.toString());
+        
+        // Format the amount according to the new fromCurrency (which was toCurrency)
+        setFormattedAmount(formatCurrencyInput(resultNumeric, toCurrency));
+      } catch (error) {
+        // If parsing fails, keep the current amount
+        setAmount(currentAmount);
+        setFormattedAmount(formatCurrencyInput(parseFloat(currentAmount), toCurrency));
+      }
+    }
+  }, [amount, fromCurrency, toCurrency, result]);
 
   return (
     <motion.div 
@@ -94,13 +154,12 @@ const CurrencyConverter: React.FC = () => {
           </label>
           <input
             id="amount"
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            type="text"
+            value={formattedAmount}
+            onChange={handleAmountChange}
             className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-500 focus:border-transparent"
-            placeholder="Enter amount"
-            min="0"
-            step="any"
+            placeholder={`Enter amount in ${fromCurrency}`}
+            inputMode="decimal"
           />
         </div>
         

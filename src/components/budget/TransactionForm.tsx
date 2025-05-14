@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useStoreContext } from '../../context/StoreContext';
+import { useCurrency } from '../../context/CurrencyContext';
+import { formatCurrencyInput, parseCurrencyInput, handleCurrencyInputChange } from '../../utils/currencyInputFormatter';
 import { motion } from 'framer-motion';
+import CurrencyToggle from '../CurrencyToggle';
 
 const TransactionForm: React.FC = () => {
   const { addTransaction, getTransactionCategories } = useStoreContext();
+  const { displayCurrency } = useCurrency();
+  
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
+  const [formattedAmount, setFormattedAmount] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState<'income' | 'expense'>('expense');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
@@ -21,6 +27,35 @@ const TransactionForm: React.FC = () => {
   const allExpenseCategories = [...new Set([...expenseCategories, ...defaultExpenseCategories])];
   
   const currentCategories = type === 'income' ? allIncomeCategories : allExpenseCategories;
+
+  // Format amount when currency changes
+  useEffect(() => {
+    if (amount) {
+      const numAmount = parseFloat(amount);
+      if (!isNaN(numAmount)) {
+        setFormattedAmount(formatCurrencyInput(numAmount, displayCurrency));
+      }
+    }
+  }, [amount, displayCurrency]);
+
+  // Handle amount input change with proper formatting
+  const handleAmountChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    
+    // Allow empty input
+    if (inputValue === '') {
+      setAmount('');
+      setFormattedAmount('');
+      return;
+    }
+    
+    // Format the input based on the selected currency
+    handleCurrencyInputChange(inputValue, displayCurrency, (formattedValue) => {
+      setFormattedAmount(formattedValue);
+      // Store the actual numeric value for calculations
+      setAmount(parseCurrencyInput(formattedValue, displayCurrency).toString());
+    });
+  }, [displayCurrency]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,6 +75,7 @@ const TransactionForm: React.FC = () => {
     
     setDescription('');
     setAmount('');
+    setFormattedAmount('');
     setCategory('');
     setDate(new Date().toISOString().split('T')[0]);
     setIsFormVisible(false);
@@ -83,9 +119,12 @@ const TransactionForm: React.FC = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <h3 className="text-xl font-bold mb-4 dark:text-white">
-            Add {type === 'income' ? 'Income' : 'Expense'}
-          </h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-bold dark:text-white">
+              Add {type === 'income' ? 'Income' : 'Expense'}
+            </h3>
+            <CurrencyToggle compact />
+          </div>
           
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -103,16 +142,20 @@ const TransactionForm: React.FC = () => {
               
               <div>
                 <label className="block mb-1 font-bold dark:text-white">Amount</label>
-                <input
-                  type="number"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  placeholder="0.00"
-                  min="0.01"
-                  step="0.01"
-                  className="w-full p-2 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={formattedAmount}
+                    onChange={handleAmountChange}
+                    placeholder={displayCurrency === 'IDR' ? '1.000.000' : '1,000.00'}
+                    className="w-full p-2 pl-8 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
+                    inputMode="decimal"
+                    required
+                  />
+                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400">
+                    {displayCurrency === 'IDR' ? 'Rp' : '$'}
+                  </span>
+                </div>
               </div>
               
               <div>

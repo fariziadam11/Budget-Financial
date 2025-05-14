@@ -12,7 +12,9 @@ import {
 } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { useTheme } from '../../context/ThemeContext';
+import { useCurrency } from '../../context/CurrencyContext';
 import { TrendingUp, TrendingDown, DollarSign } from 'lucide-react';
+import CurrencyToggle from '../../components/CurrencyToggle';
 
 ChartJS.register(
   ArcElement, 
@@ -26,6 +28,10 @@ ChartJS.register(
 const BudgetSummary: React.FC = () => {
   const { getIncome, getExpenses, getBalance, transactions } = useStoreContext();
   const { theme } = useTheme();
+  const { 
+    convertToDisplay, 
+    formatDisplay 
+  } = useCurrency();
   
   const income = getIncome();
   const expenses = getExpenses();
@@ -112,10 +118,9 @@ const BudgetSummary: React.FC = () => {
         callbacks: {
           label: function(context) {
             const value = context.parsed;
-            return `${context.label}: ${value.toLocaleString('en-US', {
-              style: 'currency', 
-              currency: 'USD'
-            })}`;
+            // Convert to display currency
+            const displayValue = convertToDisplay(value);
+            return `${context.label}: ${formatDisplay(displayValue)}`;
           }
         }
       }
@@ -146,10 +151,9 @@ const BudgetSummary: React.FC = () => {
         callbacks: {
           label: function(context) {
             const value = context.parsed.y;
-            return value.toLocaleString('en-US', {
-              style: 'currency', 
-              currency: 'USD'
-            });
+            // Convert to display currency
+            const displayValue = convertToDisplay(value);
+            return formatDisplay(displayValue);
           }
         }
       }
@@ -167,12 +171,9 @@ const BudgetSummary: React.FC = () => {
             size: 11,
           },
           callback: function(value) {
-            return value.toLocaleString('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 0
-            });
+            // Convert to display currency
+            const displayValue = convertToDisplay(value as number);
+            return formatDisplay(displayValue).replace(/\d+\.\d+/, '');
           }
         },
         grid: {
@@ -199,6 +200,13 @@ const BudgetSummary: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-base font-medium text-gray-800 dark:text-gray-200">
+          Financial Overview
+        </h3>
+        <CurrencyToggle compact />
+      </div>
+      
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
           <div className="px-4 py-3 bg-emerald-50 dark:bg-emerald-900/20 border-b border-emerald-100 dark:border-emerald-900/30">
@@ -209,12 +217,7 @@ const BudgetSummary: React.FC = () => {
           </div>
           <div className="px-4 py-3">
             <p className="text-xl font-semibold text-emerald-600 dark:text-emerald-400">
-              {income.toLocaleString(undefined, {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-              })}
+              {formatDisplay(convertToDisplay(income))}
             </p>
           </div>
         </div>
@@ -228,12 +231,7 @@ const BudgetSummary: React.FC = () => {
           </div>
           <div className="px-4 py-3">
             <p className="text-xl font-semibold text-rose-600 dark:text-rose-400">
-              {expenses.toLocaleString(undefined, {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-              })}
+              {formatDisplay(convertToDisplay(expenses))}
             </p>
           </div>
         </div>
@@ -247,12 +245,7 @@ const BudgetSummary: React.FC = () => {
           </div>
           <div className="px-4 py-3">
             <p className={`text-xl font-semibold ${balance >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
-              {balance.toLocaleString(undefined, {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-              })}
+              {formatDisplay(convertToDisplay(balance))}
             </p>
           </div>
         </div>

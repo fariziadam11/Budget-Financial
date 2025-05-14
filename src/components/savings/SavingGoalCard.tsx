@@ -3,6 +3,7 @@ import { SavingGoal } from '../../types';
 import { format, formatDistanceToNow } from 'date-fns';
 import { motion } from 'framer-motion';
 import { Trash, Plus, ArrowRight } from 'lucide-react';
+import { useCurrency } from '../../context/CurrencyContext';
 
 interface SavingGoalCardProps {
   goal: SavingGoal;
@@ -17,6 +18,7 @@ const SavingGoalCard: React.FC<SavingGoalCardProps> = ({
 }) => {
   const [isContributing, setIsContributing] = useState(false);
   const [contributionAmount, setContributionAmount] = useState('');
+  const { convertToDisplay, formatDisplay } = useCurrency();
   
   const progressPercentage = Math.min(
     Math.round((goal.currentAmount / goal.targetAmount) * 100),
@@ -144,24 +146,14 @@ const SavingGoalCard: React.FC<SavingGoalCardProps> = ({
         <div className="grid grid-cols-2 gap-6">
           <div>
             <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-1">Current Amount</p>
-            <p className="text-xl font-bold text-gray-900 dark:text-white">
-              {goal.currentAmount.toLocaleString(undefined, {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-              })}
+            <p className="text-xl font-bold text-gray-900 dark:text-white truncate" title={formatDisplay(convertToDisplay(goal.currentAmount))}>
+              {formatDisplay(convertToDisplay(goal.currentAmount))}
             </p>
           </div>
           <div>
             <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-1">Target</p>
-            <p className="text-xl font-bold text-gray-900 dark:text-white">
-              {goal.targetAmount.toLocaleString(undefined, {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-              })}
+            <p className="text-xl font-bold text-gray-900 dark:text-white truncate" title={formatDisplay(convertToDisplay(goal.targetAmount))}>
+              {formatDisplay(convertToDisplay(goal.targetAmount))}
             </p>
           </div>
         </div>
@@ -182,13 +174,8 @@ const SavingGoalCard: React.FC<SavingGoalCardProps> = ({
           {!isComplete && (
             <div className="text-right">
               <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-1">Remaining</p>
-              <p className="font-bold text-red-600 dark:text-red-400">
-                {remaining.toLocaleString(undefined, {
-                  style: 'currency',
-                  currency: 'USD',
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 0
-                })}
+              <p className="font-bold text-red-600 dark:text-red-400 truncate" title={formatDisplay(convertToDisplay(remaining))}>
+                {formatDisplay(convertToDisplay(remaining))}
               </p>
             </div>
           )}
