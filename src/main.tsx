@@ -7,12 +7,14 @@ import {
 import { StoreProvider } from './context/StoreContext';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { CurrencyProvider } from './context/CurrencyContext';
 import RequireAuth from './components/auth/RequireAuth';
 import MainLayout from './components/layout/MainLayout';
 import Dashboard from './pages/Dashboard';
 import Tasks from './pages/Tasks';
 import Budget from './pages/Budget';
 import Savings from './pages/Savings';
+import CurrencyPage from './pages/CurrencyPage';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import './index.css';
@@ -38,6 +40,7 @@ const router = createBrowserRouter([
       { path: 'tasks', element: <Tasks /> },
       { path: 'budget', element: <Budget /> },
       { path: 'savings', element: <Savings /> },
+      { path: 'currency', element: <CurrencyPage /> },
     ],
   },
 ]);
@@ -46,9 +49,11 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider>
       <AuthProvider>
-        <StoreProvider>
-          <RouterProvider router={router} />
-        </StoreProvider>
+        <CurrencyProvider>
+          <StoreProvider>
+            <RouterProvider router={router} />
+          </StoreProvider>
+        </CurrencyProvider>
       </AuthProvider>
     </ThemeProvider>
   </StrictMode>

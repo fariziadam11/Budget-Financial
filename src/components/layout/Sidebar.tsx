@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { HomeIcon, CheckSquareIcon, DollarSignIcon, PiggyBankIcon} from 'lucide-react';
+import { HomeIcon, CheckSquareIcon, DollarSignIcon, PiggyBankIcon, CoinsIcon} from 'lucide-react';
 // // import { useAuthContext } from '../../context/AuthContext'; // Import your auth context/hook
 
 interface SidebarProps {
@@ -15,6 +15,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavItemClick }) => {
     { path: '/tasks', label: 'Tasks', icon: <CheckSquareIcon size={20} /> },
     { path: '/budget', label: 'Budget', icon: <DollarSignIcon size={20} /> },
     { path: '/savings', label: 'Savings', icon: <PiggyBankIcon size={20} /> },
+    { path: '/currency', label: 'Currency', icon: <CoinsIcon size={20} /> },
   ];
 
   return (
