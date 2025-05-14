@@ -47,9 +47,9 @@ export const fetchExchangeRates = async (): Promise<ExchangeRates> => {
   isLoading = true;
   
   try {
-    // Using ExchangeRate-API's free tier
-    // In production, you would use a paid API with your API key
-    const response = await fetch('https://open.er-api.com/v6/latest/IDR');
+    // Using ExchangeRate-API with your API key
+    const API_KEY = '9f4a37c4033bea7052f1a68e';
+    const response = await fetch(`https://v6.exchangerate-api.com/v6/${API_KEY}/latest/IDR`);
     
     if (!response.ok) {
       throw new Error('Failed to fetch exchange rates');
