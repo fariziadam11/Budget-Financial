@@ -111,4 +111,4 @@ For support, email [fariziadam508@gmail.com] or open an issue in the repository.
 
 ---
 
-Made with ❤️ by [Your Name]
+Made with ❤️ by [Farizi Adam]
