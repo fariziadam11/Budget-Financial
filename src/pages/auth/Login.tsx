@@ -20,9 +20,21 @@ const Login: React.FC = () => {
       console.log('Login successful:', user);
       console.log('Navigating to /app');
       navigate('/app');
-    } catch (err) {
+    } catch (err: any) {
       console.error('Login error:', err);
-      setError('Invalid email or password');
+      
+      // Handle specific Supabase errors
+      if (err?.message?.includes('Invalid login credentials')) {
+        setError('Invalid email or password. Please check your credentials and try again.');
+      } else if (err?.message?.includes('Email not confirmed')) {
+        setError('Please check your email and confirm your account before logging in.');
+      } else if (err?.message?.includes('Too many requests')) {
+        setError('Too many login attempts. Please wait a moment before trying again.');
+      } else if (err?.message) {
+        setError(err.message);
+      } else {
+        setError('Login failed. Please try again.');
+      }
     }
   };
 

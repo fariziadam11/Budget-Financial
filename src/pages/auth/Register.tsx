@@ -16,11 +16,35 @@ const Register: React.FC = () => {
     e.preventDefault();
     setError('');
     
+    // Client-side validation
+    if (password.length < 6) {
+      setError('Password should be at least 6 characters.');
+      return;
+    }
+    
+    if (name.trim().length === 0) {
+      setError('Name is required.');
+      return;
+    }
+    
     try {
       await register(email, password, name);
       navigate('/app');
-    } catch (err) {
-      setError('Email already exists');
+    } catch (err: any) {
+      console.error('Registration error:', err);
+      
+      // Handle specific Supabase errors
+      if (err?.message?.includes('User already registered')) {
+        setError('An account with this email already exists. Please try logging in instead.');
+      } else if (err?.message?.includes('weak_password')) {
+        setError('Password should be at least 6 characters.');
+      } else if (err?.message?.includes('invalid_email')) {
+        setError('Please enter a valid email address.');
+      } else if (err?.message) {
+        setError(err.message);
+      } else {
+        setError('Registration failed. Please try again.');
+      }
     }
   };
 
@@ -102,8 +126,12 @@ const Register: React.FC = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-10 p-3 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:border-yellow-400 dark:focus:border-yellow-500 rounded-lg transition-colors duration-200"
                   required
+                  minLength={6}
                 />
               </div>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Password must be at least 6 characters long.
+              </p>
             </div>
           </div>
 
