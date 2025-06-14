@@ -127,7 +127,7 @@ const Dashboard: React.FC = () => {
                     onEdit={handleTaskEdit}
                   />
                 ))}
-                <Link to="/tasks">
+                <Link to="/app/tasks">
                   <motion.button
                     className="w-full p-2 mt-4 border-2 border-gray-300 dark:border-gray-500 
                           bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 
@@ -143,7 +143,7 @@ const Dashboard: React.FC = () => {
             ) : (
               <div className="text-center p-6 border-2 border-dashed border-gray-300 dark:border-gray-700">
                 <p className="text-gray-500 dark:text-gray-400 mb-3">No tasks due today!</p>
-                <Link to="/tasks">
+                <Link to="/app/tasks">
                   <motion.button
                     className="p-2 border-2 border-black dark:border-white bg-purple-200 hover:bg-purple-300 dark:bg-purple-800 dark:hover:bg-purple-700 transition-colors duration-200 dark:text-white"
                     whileHover={{ scale: 1.05 }}
@@ -165,7 +165,7 @@ const Dashboard: React.FC = () => {
         >
           <div className="mt-3">
             <BudgetSummary />
-            <Link to="/budget">
+            <Link to="/app/budget">
               <motion.button
                 className="w-full p-2 mt-4 border-2 border-gray-300 dark:border-gray-500 
                           bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 
@@ -197,7 +197,7 @@ const Dashboard: React.FC = () => {
                     onContribute={contributeTosavingGoal}
                   />
                 ))}
-                <Link to="/savings">
+                <Link to="/app/savings">
                   <motion.button
                     className="w-full p-2 mt-4 border-2 border-gray-300 dark:border-gray-500 
                           bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 
@@ -213,7 +213,7 @@ const Dashboard: React.FC = () => {
             ) : (
               <div className="text-center p-6 border-2 border-dashed border-gray-300 dark:border-gray-700">
                 <p className="text-gray-500 dark:text-gray-400 mb-3">No saving goals yet!</p>
-                <Link to="/savings">
+                <Link to="/app/savings">
                   <motion.button
                     className="p-2 border-2 border-black dark:border-white bg-yellow-200 hover:bg-yellow-300 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors duration-200 dark:text-white"
                     whileHover={{ scale: 1.05 }}

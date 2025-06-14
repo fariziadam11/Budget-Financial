@@ -11,11 +11,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavItemClick }) => {
   //  // const { user } = useAuthContext(); // Get the user from your auth context
   
   const navItems = [
-    { path: '/', label: 'Dashboard', icon: <HomeIcon size={20} /> },
-    { path: '/tasks', label: 'Tasks', icon: <CheckSquareIcon size={20} /> },
-    { path: '/budget', label: 'Budget', icon: <DollarSignIcon size={20} /> },
-    { path: '/savings', label: 'Savings', icon: <PiggyBankIcon size={20} /> },
-    { path: '/currency', label: 'Currency', icon: <CoinsIcon size={20} /> },
+    { path: '/app', label: 'Dashboard', icon: <HomeIcon size={20} /> },
+    { path: '/app/tasks', label: 'Tasks', icon: <CheckSquareIcon size={20} /> },
+    { path: '/app/budget', label: 'Budget', icon: <DollarSignIcon size={20} /> },
+    { path: '/app/savings', label: 'Savings', icon: <PiggyBankIcon size={20} /> },
+    { path: '/app/currency', label: 'Currency', icon: <CoinsIcon size={20} /> },
   ];
 
   return (

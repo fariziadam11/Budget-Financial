@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuthContext } from '../../context/AuthContext';
-import { LogInIcon } from 'lucide-react';
+import { LogInIcon, MailIcon, LockIcon, ArrowLeftIcon } from 'lucide-react';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -16,73 +16,129 @@ const Login: React.FC = () => {
     setError('');
     
     try {
-      await login(email, password);
-      navigate('/');
+      const user = await login(email, password);
+      console.log('Login successful:', user);
+      console.log('Navigating to /app');
+      navigate('/app');
     } catch (err) {
+      console.error('Login error:', err);
       setError('Invalid email or password');
     }
   };
 
   return (
-    <div className="min-h-screen bg-yellow-50 dark:bg-gray-950 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-gray-50 to-yellow-100 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 flex items-center justify-center p-4">
       <motion.div 
         className="w-full max-w-md bg-white dark:bg-gray-900 border-4 border-black dark:border-gray-700 p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
       >
+        <motion.button
+          onClick={() => navigate('/')}
+          className="mb-6 flex items-center text-gray-600 dark:text-gray-400 hover:text-yellow-500 dark:hover:text-yellow-400 transition-colors duration-200"
+          whileHover={{ x: -3 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <ArrowLeftIcon size={20} className="mr-2" />
+          Back to Home
+        </motion.button>
+
         <div className="flex items-center justify-center mb-8">
-          <h1 className="text-3xl font-black tracking-tight text-black dark:text-white">
-            BUDGET<span className="text-yellow-400">BOSS</span>
-          </h1>
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="text-center"
+          >
+            <h1 className="text-4xl font-black tracking-tight text-black dark:text-white mb-2">
+              BUDGET<span className="text-yellow-400">BOSS</span>
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400">Welcome back! Please login to your account.</p>
+          </motion.div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
-            <div className="p-3 bg-red-100 dark:bg-red-900/50 border-l-4 border-red-500 text-red-700 dark:text-red-300">
+            <motion.div 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="p-4 bg-red-100 dark:bg-red-900/50 border-l-4 border-red-500 text-red-700 dark:text-red-300 rounded-lg"
+            >
               {error}
-            </div>
+            </motion.div>
           )}
 
-          <div>
-            <label className="block font-bold mb-2 text-black dark:text-white">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
-              required
-            />
+          <div className="space-y-4">
+            <div>
+              <label className="block font-bold mb-2 text-black dark:text-white">Email</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <MailIcon className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full pl-10 p-3 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:border-yellow-400 dark:focus:border-yellow-500 rounded-lg transition-colors duration-200"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block font-bold mb-2 text-black dark:text-white">Password</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <LockIcon className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-10 p-3 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:border-yellow-400 dark:focus:border-yellow-500 rounded-lg transition-colors duration-200"
+                  required
+                />
+              </div>
+            </div>
           </div>
 
-          <div>
-            <label className="block font-bold mb-2 text-black dark:text-white">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none"
-              required
-            />
-          </div>
-
-          <button
+          <motion.button
             type="submit"
-            className="w-full bg-black dark:bg-white text-white dark:text-black p-3 font-bold flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200"
+            className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold p-3 flex items-center justify-center rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
             <LogInIcon size={20} className="mr-2" />
             Login
-          </button>
+          </motion.button>
         </form>
 
-        <p className="mt-6 text-center text-gray-600 dark:text-gray-400">
-          Don't have an account?{' '}
-          <Link 
-            to="/register" 
-            className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
-          >
-            Register
-          </Link>
-        </p>
+        <motion.div 
+          className="mt-6 text-center space-y-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+        >
+          <p className="text-gray-600 dark:text-gray-400">
+            Don't have an account?{' '}
+            <Link 
+              to="/register" 
+              className="text-yellow-500 dark:text-yellow-400 hover:text-yellow-600 dark:hover:text-yellow-300 font-medium transition-colors duration-200"
+            >
+              Register
+            </Link>
+          </p>
+          <p className="text-gray-600 dark:text-gray-400">
+            Or{' '}
+            <Link 
+              to="/" 
+              className="text-yellow-500 dark:text-yellow-400 hover:text-yellow-600 dark:hover:text-yellow-300 font-medium transition-colors duration-200"
+            >
+              return to the landing page
+            </Link>
+          </p>
+        </motion.div>
       </motion.div>
     </div>
   );

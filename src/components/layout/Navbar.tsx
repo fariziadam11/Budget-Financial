@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useAuthContext } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface NavbarProps {
   onNotificationClick: () => void;
@@ -18,6 +19,7 @@ const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const { user, logout } = useAuthContext();
   const { theme, toggleTheme } = useTheme();
+  const navigate = useNavigate();
 
   // Persist theme to localStorage
   useEffect(() => {
@@ -28,6 +30,14 @@ const Navbar: React.FC<NavbarProps> = ({
   const getInitials = (name?: string) => {
     if (!name) return '';
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  };
+
+  const handleLogout = () => {
+    logout();
+    // Force clear any auth state from localStorage
+    localStorage.removeItem('auth');
+    // Use replace to prevent back navigation to protected routes
+    navigate('/', { replace: true });
   };
 
   return (
@@ -94,7 +104,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
           <motion.button 
             className="p-1.5 sm:p-2 border-2 border-gray-800 dark:border-gray-200 rounded-none hover:bg-gray-800 hover:text-white dark:hover:bg-gray-200 dark:hover:text-gray-900 transition-colors duration-200"
-            onClick={logout}
+            onClick={handleLogout}
             whileTap={{ scale: 0.95 }}
             aria-label="Log out"
           >

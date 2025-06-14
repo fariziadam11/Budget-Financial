@@ -26,10 +26,6 @@ export const useAuth = () => {
     return savedAuth ? JSON.parse(savedAuth) : { user: null, isAuthenticated: false };
   });
 
-  useEffect(() => {
-    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(authState));
-  }, [authState]);
-
   /**
    * Get all users from localStorage.
    */
@@ -37,6 +33,29 @@ export const useAuth = () => {
     const users = localStorage.getItem(USERS_STORAGE_KEY);
     return users ? JSON.parse(users) : [];
   }, []);
+
+  // Verify authentication state on mount
+  useEffect(() => {
+    const verifyAuth = () => {
+      const savedAuth = localStorage.getItem(AUTH_STORAGE_KEY);
+      if (savedAuth) {
+        const { user, isAuthenticated } = JSON.parse(savedAuth);
+        if (isAuthenticated && user) {
+          // Verify user still exists in users list
+          const users = getUsers();
+          const userExists = users.some(u => u.id === user.id);
+          if (!userExists) {
+            setAuthState({ user: null, isAuthenticated: false });
+          }
+        }
+      }
+    };
+    verifyAuth();
+  }, [getUsers]);
+
+  useEffect(() => {
+    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(authState));
+  }, [authState]);
 
   /**
    * Save all users to localStorage.
