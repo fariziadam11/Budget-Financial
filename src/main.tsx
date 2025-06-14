@@ -17,9 +17,14 @@ import Savings from './pages/Savings';
 import CurrencyPage from './pages/CurrencyPage';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
+import LandingPage from './pages/LandingPage';
 import './index.css';
 
 const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <LandingPage />,
+  },
   {
     path: '/login',
     element: <Login />,
@@ -29,7 +34,7 @@ const router = createBrowserRouter([
     element: <Register />,
   },
   {
-    path: '/',
+    path: '/app',
     element: (
       <RequireAuth>
         <MainLayout />
