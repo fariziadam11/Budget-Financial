@@ -9,6 +9,7 @@ import { StoreProvider } from './context/StoreContext';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { CurrencyProvider } from './context/CurrencyContext';
+import RedirectIfAuth from './components/auth/RedirectIfAuth';
 import RequireAuth from './components/auth/RequireAuth';
 import MainLayout from './components/layout/MainLayout';
 import Dashboard from './pages/Dashboard';
@@ -28,11 +29,19 @@ const router = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <Login />,
+    element: (
+      <RedirectIfAuth>
+        <Login />
+      </RedirectIfAuth>
+    ),
   },
   {
     path: '/register',
-    element: <Register />,
+    element: (
+      <RedirectIfAuth>
+        <Register />
+      </RedirectIfAuth>
+    ),
   },
   {
     path: '/app',

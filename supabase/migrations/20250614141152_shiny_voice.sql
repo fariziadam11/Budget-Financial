@@ -123,18 +123,21 @@ ALTER TABLE saving_goals ENABLE ROW LEVEL SECURITY;
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 
 -- Create policies for users table
+DROP POLICY IF EXISTS "Users can read own profile" ON users;
 CREATE POLICY "Users can read own profile"
   ON users
   FOR SELECT
   TO authenticated
   USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Users can update own profile" ON users;
 CREATE POLICY "Users can update own profile"
   ON users
   FOR UPDATE
   TO authenticated
   USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Users can insert own profile" ON users;
 CREATE POLICY "Users can insert own profile"
   ON users
   FOR INSERT
@@ -142,6 +145,7 @@ CREATE POLICY "Users can insert own profile"
   WITH CHECK (auth.uid() = id);
 
 -- Create policies for tasks table
+DROP POLICY IF EXISTS "Users can manage own tasks" ON tasks;
 CREATE POLICY "Users can manage own tasks"
   ON tasks
   FOR ALL
@@ -150,6 +154,7 @@ CREATE POLICY "Users can manage own tasks"
   WITH CHECK (auth.uid() = user_id);
 
 -- Create policies for transactions table
+DROP POLICY IF EXISTS "Users can manage own transactions" ON transactions;
 CREATE POLICY "Users can manage own transactions"
   ON transactions
   FOR ALL
@@ -158,6 +163,7 @@ CREATE POLICY "Users can manage own transactions"
   WITH CHECK (auth.uid() = user_id);
 
 -- Create policies for saving_goals table
+DROP POLICY IF EXISTS "Users can manage own saving goals" ON saving_goals;
 CREATE POLICY "Users can manage own saving goals"
   ON saving_goals
   FOR ALL
@@ -166,6 +172,7 @@ CREATE POLICY "Users can manage own saving goals"
   WITH CHECK (auth.uid() = user_id);
 
 -- Create policies for notifications table
+DROP POLICY IF EXISTS "Users can manage own notifications" ON notifications;
 CREATE POLICY "Users can manage own notifications"
   ON notifications
   FOR ALL
@@ -183,21 +190,25 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Create triggers for updated_at
+DROP TRIGGER IF EXISTS users_updated_at ON users;
 CREATE TRIGGER users_updated_at
   BEFORE UPDATE ON users
   FOR EACH ROW
   EXECUTE FUNCTION handle_updated_at();
 
+DROP TRIGGER IF EXISTS tasks_updated_at ON tasks;
 CREATE TRIGGER tasks_updated_at
   BEFORE UPDATE ON tasks
   FOR EACH ROW
   EXECUTE FUNCTION handle_updated_at();
 
+DROP TRIGGER IF EXISTS transactions_updated_at ON transactions;
 CREATE TRIGGER transactions_updated_at
   BEFORE UPDATE ON transactions
   FOR EACH ROW
   EXECUTE FUNCTION handle_updated_at();
 
+DROP TRIGGER IF EXISTS saving_goals_updated_at ON saving_goals;
 CREATE TRIGGER saving_goals_updated_at
   BEFORE UPDATE ON saving_goals
   FOR EACH ROW
@@ -218,7 +229,7 @@ BEGIN
   );
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- Create trigger for new user signup
 CREATE OR REPLACE TRIGGER on_auth_user_created

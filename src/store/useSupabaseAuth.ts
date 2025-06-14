@@ -108,6 +108,7 @@ export const useSupabaseAuth = () => {
 
       // The user profile will be created automatically by the database trigger
       const user = await convertSupabaseUser(data.user);
+      setAuthState({ user, isAuthenticated: true });
       return user;
     } catch (error) {
       console.error('Registration error:', error);
@@ -132,6 +133,7 @@ export const useSupabaseAuth = () => {
       }
 
       const user = await convertSupabaseUser(data.user);
+      setAuthState({ user, isAuthenticated: true });
       return user;
     } catch (error) {
       console.error('Login error:', error);

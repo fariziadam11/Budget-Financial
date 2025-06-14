@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuthContext } from '../../context/AuthContext';
@@ -16,9 +16,7 @@ const Login: React.FC = () => {
     setError('');
     
     try {
-      const user = await login(email, password);
-      console.log('Login successful:', user);
-      console.log('Navigating to /app');
+      await login(email, password);
       navigate('/app');
     } catch (err: any) {
       console.error('Login error:', err);
