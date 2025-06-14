@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import {
   createBrowserRouter,
   RouterProvider,
+  Navigate,
 } from 'react-router-dom';
 import { StoreProvider } from './context/StoreContext';
 import { AuthProvider } from './context/AuthContext';
@@ -40,6 +41,7 @@ const router = createBrowserRouter([
         <MainLayout />
       </RequireAuth>
     ),
+    errorElement: <Navigate to="/login" replace />,
     children: [
       { index: true, element: <Dashboard /> },
       { path: 'tasks', element: <Tasks /> },
@@ -47,6 +49,10 @@ const router = createBrowserRouter([
       { path: 'savings', element: <Savings /> },
       { path: 'currency', element: <CurrencyPage /> },
     ],
+  },
+  {
+    path: '*',
+    element: <Navigate to="/" replace />,
   },
 ]);
 
