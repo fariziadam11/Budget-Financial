@@ -210,7 +210,11 @@ BEGIN
   INSERT INTO users (id, name)
   VALUES (
     NEW.id,
-    COALESCE(NEW.raw_user_meta_data->>'name', NEW.email)
+    COALESCE(
+      NEW.raw_user_meta_data->>'name',
+      NEW.raw_app_meta_data->>'name',
+      NEW.email
+    )
   );
   RETURN NEW;
 END;
