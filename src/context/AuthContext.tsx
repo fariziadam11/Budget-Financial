@@ -1,10 +1,10 @@
 import React, { createContext, useContext, ReactNode } from 'react';
-import { useAuth } from '../store/useAuth';
+import { useSupabaseAuth } from '../store/useSupabaseAuth';
 
-const AuthContext = createContext<ReturnType<typeof useAuth> | undefined>(undefined);
+const AuthContext = createContext<ReturnType<typeof useSupabaseAuth> | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const auth = useAuth();
+  const auth = useSupabaseAuth();
   
   return (
     <AuthContext.Provider value={auth}>

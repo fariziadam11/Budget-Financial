@@ -7,20 +7,20 @@ interface RequireAuthProps {
 }
 
 const RequireAuth: React.FC<RequireAuthProps> = ({ children }) => {
-  const { isAuthenticated, user } = useAuthContext();
+  const { isAuthenticated, user, loading } = useAuthContext();
   const location = useLocation();
 
-  // Check if we have a valid authentication state
-  useEffect(() => {
-    const savedAuth = localStorage.getItem('budgetboss_auth');
-    if (savedAuth) {
-      const { isAuthenticated: savedIsAuthenticated, user: savedUser } = JSON.parse(savedAuth);
-      if (!savedIsAuthenticated || !savedUser) {
-        // If saved state is invalid, clear it
-        localStorage.removeItem('budgetboss_auth');
-      }
-    }
-  }, []);
+  // Show loading spinner while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-gray-50 to-yellow-100 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated || !user) {
     // Save the attempted URL for redirecting after login
