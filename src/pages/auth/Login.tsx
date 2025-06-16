@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuthContext } from '../../context/AuthContext';
-import { LogInIcon, MailIcon, LockIcon, ArrowLeftIcon } from 'lucide-react';
+import { LogInIcon, MailIcon, LockIcon, ArrowLeftIcon, AlertCircleIcon, InfoIcon } from 'lucide-react';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showHelp, setShowHelp] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuthContext();
 
@@ -24,6 +25,7 @@ const Login: React.FC = () => {
       // Handle specific Supabase errors
       if (err?.message?.includes('Invalid login credentials')) {
         setError('Invalid email or password. Please check your credentials and try again.');
+        setShowHelp(true);
       } else if (err?.message?.includes('Email not confirmed')) {
         setError('Please check your email and confirm your account before logging in.');
       } else if (err?.message?.includes('Too many requests')) {
@@ -73,9 +75,42 @@ const Login: React.FC = () => {
             <motion.div 
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-4 bg-red-100 dark:bg-red-900/50 border-l-4 border-red-500 text-red-700 dark:text-red-300 rounded-lg"
+              className="space-y-3"
             >
-              {error}
+              <div className="p-4 bg-red-100 dark:bg-red-900/50 border-l-4 border-red-500 text-red-700 dark:text-red-300 rounded-lg flex items-start">
+                <AlertCircleIcon className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
+                <span>{error}</span>
+              </div>
+              
+              {showHelp && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  className="p-4 bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-400 text-blue-700 dark:text-blue-300 rounded-lg"
+                >
+                  <div className="flex items-start">
+                    <InfoIcon className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
+                    <div className="space-y-2">
+                      <p className="font-medium">Having trouble logging in?</p>
+                      <ul className="text-sm space-y-1 list-disc list-inside ml-4">
+                        <li>Double-check your email address for typos</li>
+                        <li>Make sure your password is correct</li>
+                        <li>If you recently registered, check your email for a confirmation link</li>
+                        <li>Try resetting your password if you've forgotten it</li>
+                      </ul>
+                      <p className="text-sm mt-3">
+                        Don't have an account yet?{' '}
+                        <Link 
+                          to="/register" 
+                          className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline"
+                        >
+                          Create one here
+                        </Link>
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
             </motion.div>
           )}
 
@@ -89,9 +124,14 @@ const Login: React.FC = () => {
                 <input
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (showHelp) setShowHelp(false);
+                    if (error) setError('');
+                  }}
                   className="w-full pl-10 p-3 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:border-yellow-400 dark:focus:border-yellow-500 rounded-lg transition-colors duration-200"
                   required
+                  autoComplete="email"
                 />
               </div>
             </div>
@@ -105,9 +145,14 @@ const Login: React.FC = () => {
                 <input
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    if (showHelp) setShowHelp(false);
+                    if (error) setError('');
+                  }}
                   className="w-full pl-10 p-3 border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:border-yellow-400 dark:focus:border-yellow-500 rounded-lg transition-colors duration-200"
                   required
+                  autoComplete="current-password"
                 />
               </div>
             </div>
